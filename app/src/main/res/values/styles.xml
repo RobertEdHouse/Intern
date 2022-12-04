@@ -1,0 +1,8 @@
+<resources>
+    <style name="Widget.Theme.Intertn.ButtonBar.Fullscreen" parent="">
+    </style>
+    <style name="ButtonStyle" parent="">
+        <item name="android:textColor">@color/light_green</item>
+    </style>
+
+</resources>
