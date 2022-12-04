@@ -4,5 +4,8 @@
     <style name="ButtonStyle" parent="">
         <item name="android:textColor">@color/light_green</item>
     </style>
+    <style name="ButtonClickedStyle" parent="">
+        <item name="android:textColor">@color/black</item>
+    </style>
 
 </resources>

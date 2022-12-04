@@ -8,33 +8,44 @@
     android:layout_height="match_parent"
     tools:context=".fragments.InterviewFragment">
 
-    <TextView
-        android:id="@+id/textPatient"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imagePatient"
-        android:layout_alignParentTop="false"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/round_corner"
-        style="@style/ButtonStyle"
-        android:text="Болить голова..."
-        android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/imagePatient"
+    <LinearLayout
+        android:id="@+id/iconLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:layout_above="@+id/scrollButton"
-        android:layout_marginStart="20dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
+        android:layout_above="@+id/scrollButton"
         android:background="@drawable/round_corner_empty"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icon_test" />
+        >
+
+        <TextView
+            android:id="@+id/textPatient"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/round_corner"
+            android:text="Болить голова...\n"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imagePatient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_test" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonTreat"
@@ -44,7 +55,8 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_shape_selector"
+        android:textColor="@drawable/button_textcolor_selector"
         style="@style/ButtonStyle"
         android:fontFamily="sans-serif-black"
         android:text=" [ Лікувати ] "
@@ -71,8 +83,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/button_shape"
-                style="@style/ButtonStyle"
+                android:background="@drawable/button_shape_selector"
+                android:textColor="@drawable/button_textcolor_selector"
                 android:text="Як себе почуваєте?"
                 android:textSize="22sp" />
 
@@ -83,8 +95,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/button_shape"
-                style="@style/ButtonStyle"
+                android:background="@drawable/button_shape_selector"
+                android:textColor="@drawable/button_textcolor_selector"
                 android:text="Як пройшла ніч?"
                 android:textSize="22sp" />
 
@@ -95,8 +107,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/button_shape"
-                style="@style/ButtonStyle"
+                android:background="@drawable/button_shape_selector"
+                android:textColor="@drawable/button_textcolor_selector"
                 android:text="Button"
                 android:textSize="22sp" />
 
@@ -107,8 +119,8 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="15dp"
-                android:background="@drawable/button_shape"
-                style="@style/ButtonStyle"
+                android:background="@drawable/button_shape_selector"
+                android:textColor="@drawable/button_textcolor_selector"
                 android:text="Button"
                 android:textSize="22sp" />
         </LinearLayout>
