@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/ThemeOverlay.Intertn.FullscreenContainer"
-    android:background="?attr/fullscreenBackgroundColor"
+    style="@style/FragmentStyle"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.InterviewFragment">
@@ -49,6 +49,7 @@
 
     <Button
         android:id="@+id/buttonTreat"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -56,10 +57,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_shape_selector"
-        android:textColor="@drawable/button_textcolor_selector"
-        style="@style/ButtonStyle"
         android:fontFamily="sans-serif-black"
         android:text=" [ Лікувати ] "
+        android:textColor="@drawable/button_textcolor_selector"
         android:textSize="24sp" />
 
     <ScrollView

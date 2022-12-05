@@ -1,9 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/FragmentStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.BodyFragment">
+    android:orientation="vertical"
+    tools:context=".fragments.BodyFragment" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutPatientDialog"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:foreground="@drawable/round_corner_empty"
+            android:minWidth="300dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_test" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_corner_empty" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonsNavigation"
+        android:layout_below="@+id/layoutPatientDialog"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:foreground="@drawable/round_corner_empty"
+        android:minHeight="500dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/body_test2" />
 
 
-</FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonsNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonToDialog"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_shape_selector"
+            android:text="До діалогу"
+            android:textColor="@drawable/button_textcolor_selector"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button8"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_shape_selector"
+            android:textColor="@drawable/button_textcolor_selector"
+            android:text="Наступний"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</RelativeLayout>
