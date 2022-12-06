@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.intertn.R;
+import com.example.intertn.controller.WorldController;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +16,8 @@ import com.example.intertn.R;
  * create an instance of this fragment.
  */
 public class OrganFragment extends Fragment {
+
+    private WorldController worldController;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

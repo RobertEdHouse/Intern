@@ -4,27 +4,37 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.intertn.R;
+import com.example.intertn.controller.WorldController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class InterviewFragment extends BaseFragment {
 
+    private static final String WORLD_CONTROLLER = "world_controller";
+    private WorldController worldController;
 
     public static InterviewFragment newInstance(Bundle bundle) {
         InterviewFragment fragment = new InterviewFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
+        Bundle args = new Bundle();
+        args.putSerializable(WORLD_CONTROLLER, bundle.getSerializable(WORLD_CONTROLLER));
+        fragment.setArguments(args);
         return fragment;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState==null)
+            worldController=(WorldController) getArguments().getSerializable(WORLD_CONTROLLER);
+        else
+            worldController=(WorldController) savedInstanceState.getSerializable(WORLD_CONTROLLER);
     }
     @Nullable
     @Override
@@ -33,7 +43,7 @@ public class InterviewFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(
-                 R.layout.fragment_interview,
+                R.layout.fragment_interview,
                 container,
                 false
         );
@@ -43,14 +53,18 @@ public class InterviewFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        view.setSystemUiVisibility(uiOptions);
+        hideUi(view);
         view.findViewById(R.id.buttonTreat).setOnClickListener(v -> {
             getAppContract().toBodyScreen(this);
         });
+
+        List<Button> questionButtons=new ArrayList<>();
+        questionButtons.add(view.findViewById(R.id.buttonQuestion1));
+        questionButtons.add(view.findViewById(R.id.buttonQuestion2));
+        questionButtons.add(view.findViewById(R.id.buttonQuestion3));
+        questionButtons.add(view.findViewById(R.id.buttonQuestion4));
+
+        setQuestionText(questionButtons);
     }
 
 
@@ -60,4 +74,10 @@ public class InterviewFragment extends BaseFragment {
         super.onDestroy();
     }
 
+    private void setQuestionText(List<Button> questionButtons){
+        List<String> questions=worldController.getQuestion();
+        for(int i=0; i<questions.size()&&i<questionButtons.size();i++){
+            questionButtons.get(i).setText(questions.get(i));
+        }
+    }
 }

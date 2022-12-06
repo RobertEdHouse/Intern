@@ -132,7 +132,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_shape_selector"
             android:minWidth="150dp"
-            android:text=" < "
+            android:text="  "
             android:textColor="@drawable/button_textcolor_selector" />
 
         <Button

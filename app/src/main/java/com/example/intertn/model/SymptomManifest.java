@@ -14,6 +14,6 @@ public class SymptomManifest {
         return Code;
     }
     public int getProbability(){
-        return Code;
+        return Probability;
     }
 }

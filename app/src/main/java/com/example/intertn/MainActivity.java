@@ -8,21 +8,19 @@ import androidx.fragment.app.Fragment;
 import com.example.intertn.contract.AppContract;
 import com.example.intertn.fragments.BodyFragment;
 import com.example.intertn.fragments.InterviewFragment;
+import com.example.intertn.fragments.MenuFragment;
 
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements AppContract {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-
         if (savedInstanceState == null) {
-
-            launchFragment(InterviewFragment.newInstance(null));
+            launchFragment(new MenuFragment());
         }
     }
 
