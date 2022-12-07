@@ -32,7 +32,7 @@
             android:background="@drawable/round_corner"
             style="@style/ButtonStyle"
             android:text="Болить голова...\n"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <ImageView
             android:id="@+id/imagePatient"
@@ -109,7 +109,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@drawable/button_shape_selector"
                 android:textColor="@drawable/button_textcolor_selector"
-                android:text="Button"
+                android:text="..."
                 android:textSize="22sp" />
 
             <Button
@@ -121,7 +121,7 @@
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/button_shape_selector"
                 android:textColor="@drawable/button_textcolor_selector"
-                android:text="Button"
+                android:text="..."
                 android:textSize="22sp" />
         </LinearLayout>
     </ScrollView>

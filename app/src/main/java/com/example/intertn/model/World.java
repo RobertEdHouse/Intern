@@ -2,6 +2,7 @@ package com.example.intertn.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -11,19 +12,20 @@ public class World {
     private int TotalDays;
     private Player Avatar;
     private List<Patient> Patients;
-    private List<Patient> DeadPatients;
+    private LinkedList<Patient> DeadPatients;
     private List<Symptom> Symptoms;
     private List<Disease> Diseases;
     private List<Question> Questions;
     private List<Medicine> Medicines;
 
     private Map<String, Disease> treat;
+    private List<Patient> currentDeadPatients;
     private boolean isGame = true;
 
     public World()
     {
         Patients = new ArrayList<>();
-        DeadPatients = new ArrayList<>();
+        DeadPatients = new LinkedList<>();
         //заполняем Symptoms, Diseases, Questions,
         //Medicines из файла конфигурации
         treat=new HashMap<String,Disease>();
@@ -45,9 +47,9 @@ public class World {
     private Patient initPatient()
     {
         Random random = new Random();
-        Patient newPatien = new Patient("Мартiн", "Септiм", SexType.MALE, 90, Diseases.get(random.nextInt(Diseases.size())));
+        Patient newPatient = new Patient("Мартiн", "Септiм", SexType.MALE, 90, Diseases.get(random.nextInt(Diseases.size())));
 
-        return newPatien;
+        return newPatient;
     }
     private List<Medicine> getStandardMedicines()
     {
@@ -58,12 +60,14 @@ public class World {
 
     public void nextDay()
     {
-
+        currentDeadPatients=new ArrayList<>();
         for (Patient patient : Patients)
         {
+            State state=patient.getCurrentState();
             patient.nextDay(Symptoms, treat);
-            if (patient.getCurrentState() == State.DEAD)
+            if (patient.getCurrentState() == State.DEAD && state != State.DEAD)
             {
+                currentDeadPatients.add(patient);
                 DeadPatients.add(patient);
                 Patients.remove(patient);
                 if (Patients.size() == 0)
@@ -192,10 +196,12 @@ public class World {
         isGame = false;
         return;
     }
-    
-    
 
-    
+
+    public List<Patient> getCurrentDeadPatients() {
+        return currentDeadPatients;
+    }
+
     public int getCurrentDay() {
         return CurrentDay;
     }
@@ -236,7 +242,7 @@ public class World {
         return treat;
     }
 
-    public boolean getIsGame() {
+    public boolean isGame() {
         return isGame;
     }
 

@@ -51,7 +51,7 @@ public class MenuFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable(WORLD_CONTROLLER,worldController);
             this.setArguments(bundle);
-            getAppContract().toInterviewScreen(this);
+            getAppContract().toMessageScreen(this);
         });
     }
 

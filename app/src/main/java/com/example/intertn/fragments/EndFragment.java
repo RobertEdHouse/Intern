@@ -1,42 +1,48 @@
 package com.example.intertn.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.intertn.R;
 import com.example.intertn.controller.WorldController;
 
 import java.util.List;
 
-public class BodyFragment extends BaseFragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link EndFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class EndFragment extends BaseFragment {
+
     private static final String WORLD_CONTROLLER = "world_controller";
     private static final String DEBUG_TAG = "log";
 
+    CountDownTimer countDownTimer;
+    private Runnable runnable;
+    private Handler handler;
 
     private WorldController worldController;
-    private int countSlides=0;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-    private TextView dialogsText;
-    public BodyFragment() {
+    public EndFragment() {
         // Required empty public constructor
     }
 
-    public static BodyFragment newInstance(Bundle bundle) {
-        BodyFragment fragment = new BodyFragment();
+    public static EndFragment newInstance(Bundle bundle) {
+        EndFragment fragment = new EndFragment();
         Bundle args = new Bundle();
         args.putSerializable(WORLD_CONTROLLER, bundle.getSerializable(WORLD_CONTROLLER));
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,41 +52,30 @@ public class BodyFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             worldController=(WorldController) getArguments().getSerializable(WORLD_CONTROLLER);
-
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_body, container, false);
+        return inflater.inflate(R.layout.fragment_end, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         hideUi(view);
-        view.findViewById(R.id.buttonToDialog).setOnClickListener(v -> {
-            getAppContract().toInterviewScreen(this);
-        });
-        view.findViewById(R.id.buttonToNextPatient).setOnClickListener(v -> {
-            if(!worldController.nextPatient()){
-                worldController.nextDay();
-                getAppContract().toEndScreen(this);
-            }
-        });
+        TextView mess=view.findViewById(R.id.textEndMessage);
+        FrameLayout frame=view.findViewById(R.id.layoutEndMessage);
 
-        TextView patientText=view.findViewById(R.id.textTemperature);
-        patientText.setText(worldController.getPatientTemperature() +"°C");
-
-        dialogsText=view.findViewById(R.id.textDialogs);
-        setDialogsText();
-    }
-
-    private void setDialogsText(){
-        List<String> listDialogs=worldController.getDialogs();
-        for(String d : listDialogs){
-            dialogsText.setText(d+"\n"+dialogsText.getText());
+        List<String> deadPatient=worldController.getCurrentDeadPatient();
+        for(String s : deadPatient){
+            mess.setText(mess.getText()+s);
         }
-    }
+        frame.setOnClickListener(view1 -> {
+            getAppContract().toMessageScreen(this);
+        });
 
+    }
 }

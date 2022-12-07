@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class Patient {
-    
+
     private String FirstName;
     private String LastName;
     private SexType Sex;
@@ -36,6 +36,8 @@ public class Patient {
         Sex = sex;
         Immunity = immunity;
         Diseases=new ArrayList<>();
+        Medicines=new ArrayList<>();
+        Symptoms=new ArrayList<>();
         Diseases.add(disease);
 
 
@@ -55,15 +57,17 @@ public class Patient {
     {
         Random rand = new Random();
         Temperature += (1 - (float)Immunity / 100) * ((rand.nextInt(3 - 1) + 1) );
+        Temperature = ((float)Math.ceil(Temperature * 10))/10;
     }
     private void lowerTemperature()
     {
         Random rand = new Random();
-        float f = ((float)Immunity / 100) * ((rand.nextInt(3 - 1) + 1));
+        float f = (Immunity / 100) * ((rand.nextInt(3 - 1) + 1));
         if (Temperature - f < 36.6)
             Temperature = 36.6f;
         else {
             Temperature -= f;
+            Temperature = ((float)Math.ceil(Temperature * 10))/10;
         }
     }
 
@@ -78,6 +82,7 @@ public class Patient {
         //применить лекарства
         //изменить состояния болезней
         List<Disease> activeDiseases = Diseases;
+        if(Medicines.size()>0)
         for (Medicine med : Medicines)
         {
             for (Disease dis : Diseases)
@@ -145,15 +150,16 @@ public class Patient {
     }
     private void updateSymptoms(List<Symptom> symptoms)
     {
+
         Symptoms.clear();
 
         for (Disease disease : Diseases)
-        for (Symptom sym : symptoms)
-        for (SymptomManifest symMan : disease.getListSymptom())
-        {
-            if (sym.getId() == symMan.getCode())
-                Symptoms.add(sym);
-        }
+            for (Symptom sym : symptoms)
+                for (SymptomManifest symMan : disease.getListSymptom())
+                {
+                    if (sym.getId() == symMan.getCode())
+                        Symptoms.add(sym);
+                }
 
 
         //на основе болезни обновить симптомы
@@ -161,6 +167,9 @@ public class Patient {
 
     public Answer answer(Question question)
     {
+        if(question==null){
+            return new Answer(-1,getStandardAnswer());
+        }
         List<Symptom> commonSymptoms = new ArrayList<>();
         for (int code : question.getSymptomCodes())
         {
@@ -174,7 +183,11 @@ public class Patient {
         Symptom symptomRandom = commonSymptoms.get(rand.nextInt(commonSymptoms.size()));
         return symptomRandom.getAnswer();
     }
-    
+    private String getStandardAnswer(){
+        return "Доброго дня\n";
+
+    }
+
     public String getFirstName() {
         return FirstName;
     }

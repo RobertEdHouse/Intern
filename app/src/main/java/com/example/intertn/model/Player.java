@@ -87,6 +87,11 @@ public class Player {
         }
         return dialogs;
     }
+
+    public List<Dialog> getDialogs() {
+        return Dialogs;
+    }
+
     public void addDialog(Dialog dialog)
     {
         Dialogs.add(dialog);
