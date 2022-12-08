@@ -1,8 +1,9 @@
 package com.example.intertn.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Medicine {
+public class Medicine implements Serializable {
     private int Id;
     private String Type;
     private int Count;

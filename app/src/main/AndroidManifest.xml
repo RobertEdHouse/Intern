@@ -24,7 +24,12 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
         </activity>
+        <service
+            android:name=".service.LoadSaveService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

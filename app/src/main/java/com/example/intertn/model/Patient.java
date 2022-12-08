@@ -1,12 +1,13 @@
 package com.example.intertn.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Patient {
+public class Patient implements Serializable {
 
     private String FirstName;
     private String LastName;

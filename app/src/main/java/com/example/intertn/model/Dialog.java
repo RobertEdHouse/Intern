@@ -1,6 +1,8 @@
 package com.example.intertn.model;
 
-public class Dialog {
+import java.io.Serializable;
+
+public class Dialog implements Serializable {
     private int Id;
     private String Question;
     private String Answer;

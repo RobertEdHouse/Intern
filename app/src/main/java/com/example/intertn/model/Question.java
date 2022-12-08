@@ -1,8 +1,9 @@
 package com.example.intertn.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Question {
+public class Question implements Serializable {
     private int Id;
     private String Text;
     private List<Integer> SymptomCodes;

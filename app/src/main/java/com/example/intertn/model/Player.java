@@ -1,9 +1,10 @@
 package com.example.intertn.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Serializable {
     private int Karma;
     private int Money;
     private List<Medicine> Medicines;

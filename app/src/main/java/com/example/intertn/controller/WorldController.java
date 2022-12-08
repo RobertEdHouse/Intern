@@ -1,17 +1,22 @@
 package com.example.intertn.controller;
 
+import android.content.Context;
+
 import com.example.intertn.model.Dialog;
+import com.example.intertn.model.ISaveLoad;
 import com.example.intertn.model.Patient;
 import com.example.intertn.model.Question;
+import com.example.intertn.model.SaveLoadClass;
 import com.example.intertn.model.World;
+import com.example.intertn.model.WorldData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorldController implements Serializable {
-    private World world;
-    private Patient currentPatient;
+    private transient World world;
+    private transient Patient currentPatient;
     private int currentDay=0;
     public WorldController(World world){
         this.world=world;
@@ -76,6 +81,7 @@ public class WorldController implements Serializable {
         return patients;
     }
     public void nextDay(){
+
         if(!world.isGame())
             return;
         setCurrentPatient(world.getPatients().get(0));
@@ -90,5 +96,20 @@ public class WorldController implements Serializable {
 
     public boolean isGame() {
         return world.isGame();
+    }
+
+    public void saveGame(Context context){
+
+    }
+
+    public void loadGame(Context context){
+        ISaveLoad save=new SaveLoadClass(context);
+        WorldData worldData=save.LoadData();
+        world.LoadGame(worldData);
+    }
+
+    public WorldData getWorldFata(){
+        return new WorldData(
+                world.getCurrentDay(), world.getTotalDays(), world.getAvatar(), world.getPatients(), world.getDeadPatients());
     }
 }

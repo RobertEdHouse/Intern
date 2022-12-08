@@ -1,5 +1,6 @@
 package com.example.intertn.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class World {
+public class World implements Serializable {
     private int CurrentDay;
     private int TotalDays;
     private Player Avatar;
-    private List<Patient> Patients;
-    private LinkedList<Patient> DeadPatients;
+    private LinkedList<Patient> Patients;
+    private List<Patient> DeadPatients;
     private List<Symptom> Symptoms;
     private List<Disease> Diseases;
     private List<Question> Questions;
@@ -24,8 +25,8 @@ public class World {
 
     public World()
     {
-        Patients = new ArrayList<>();
-        DeadPatients = new LinkedList<>();
+        Patients = new LinkedList<>();
+        DeadPatients = new ArrayList<>();
         //заполняем Symptoms, Diseases, Questions,
         //Medicines из файла конфигурации
         treat=new HashMap<String,Disease>();
@@ -91,16 +92,17 @@ public class World {
 
     public void SaveGame()
     {
+
         //SaveLoad.SaveData(this);
     }
-    public void LoadGame()
+    public void LoadGame(WorldData worldData)
     {
-//        WorldData loadWorld = SaveLoad.LoadData();
-//        CurrentDay = loadWorld.CurrentDay;
-//        TotalDays = loadWorld.TotalDays;
-//        Avatar = loadWorld.Avatar;
-//        Patients = loadWorld.Patients;
-//        DeadPatients = loadWorld.DeadPatients;
+        WorldData loadWorld = worldData;
+        CurrentDay = loadWorld.CurrentDay;
+        TotalDays = loadWorld.TotalDays;
+        Avatar = loadWorld.Avatar;
+        Patients = loadWorld.Patients;
+        DeadPatients = loadWorld.DeadPatients;
     }
 
 
@@ -214,7 +216,7 @@ public class World {
         return Avatar;
     }
 
-    public List<Patient> getPatients() {
+    public LinkedList<Patient> getPatients() {
         return Patients;
     }
 
