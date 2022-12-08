@@ -1,6 +1,8 @@
 package com.example.intertn.model;
 
-public class SymptomManifest {
+import java.io.Serializable;
+
+public class SymptomManifest implements Serializable {
     private int Code;
     private int Probability;
 

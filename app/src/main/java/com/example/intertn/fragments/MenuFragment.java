@@ -54,9 +54,12 @@ public class MenuFragment extends BaseFragment {
             getAppContract().toMessageScreen(this);
         });
         view.findViewById(R.id.buttonLoadGame).setOnClickListener(v -> {
-            if(worldController==null)
-                return;
+            worldController=new WorldController();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(WORLD_CONTROLLER,worldController);
+            this.setArguments(bundle);
             worldController.loadGame(getContext());
+
             getAppContract().toMessageScreen(this);
         });
     }

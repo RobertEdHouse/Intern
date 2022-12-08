@@ -22,19 +22,6 @@
         android:background="@drawable/round_corner_empty"
         >
 
-        <TextView
-            android:id="@+id/textPatient"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/round_corner"
-            style="@style/ButtonStyle"
-            android:text="Болить голова...\n"
-            android:textSize="24sp" />
-
         <ImageView
             android:id="@+id/imagePatient"
             android:layout_width="match_parent"
@@ -47,6 +34,19 @@
             android:layout_marginBottom="20dp"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_test" />
+
+        <TextView
+            android:id="@+id/textPatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/round_corner"
+            style="@style/ButtonStyle"
+            android:text="Болить голова...\n"
+            android:textSize="24sp" />
 
     </RelativeLayout>
 

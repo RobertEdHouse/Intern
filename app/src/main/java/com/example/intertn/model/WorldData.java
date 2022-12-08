@@ -1,9 +1,10 @@
 package com.example.intertn.model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WorldData {
+public class WorldData implements Serializable {
     public int CurrentDay;
     public int TotalDays;
     public Player Avatar;

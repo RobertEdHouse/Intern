@@ -83,20 +83,21 @@ public class Patient implements Serializable {
         //применить лекарства
         //изменить состояния болезней
         List<Disease> activeDiseases = Diseases;
-        if(Medicines.size()>0)
-        for (Medicine med : Medicines)
-        {
-            for (Disease dis : Diseases)
+        if(Medicines.size()>0){
+            for (Medicine med : Medicines)
             {
-                Disease d = dis;
-                if (treat.get(med.getType()).equals(d) == true)
+                for (Disease dis : Diseases)
                 {
-                    if (d.isTemperature() == true)
-                        lowerTemperature();
-                    med.treatOrgans(this);
-                    activeDiseases.remove(dis);
-                    if (activeDiseases.size() == 0)
-                        break;
+                    Disease d = dis;
+                    if (treat.get(med.getType()).equals(d) == true)
+                    {
+                        if (d.isTemperature() == true)
+                            lowerTemperature();
+                        med.treatOrgans(this);
+                        activeDiseases.remove(dis);
+                        if (activeDiseases.size() == 0)
+                            break;
+                    }
                 }
             }
         }
@@ -124,7 +125,9 @@ public class Patient implements Serializable {
                     raiseTemperature();
                 changeState();
             }
-            dis.raiseStage();
+            dis.raiseStage(Immunity);
+            if(Immunity>50)
+                Immunity-=Immunity/((new Random()).nextInt(10-1)+1);
         }
         updateSymptoms(symptoms);
 
@@ -141,7 +144,7 @@ public class Patient implements Serializable {
     {
         if (Brain == 0 || Heart == 0 ||
                 Liver == 0 || Intestines == 0 ||
-                Lungs == 0 || Stomach == 0 )
+                Lungs == 0 || Stomach == 0 || Temperature>=42)
             this.CurrentState = State.DEAD;
         for(Disease dis : Diseases)
         {
@@ -255,5 +258,9 @@ public class Patient implements Serializable {
 
     public void setStomach(int stomach) {
         Stomach = stomach;
+    }
+
+    public int getImmunity() {
+        return Immunity;
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.intertn.R;
 import com.example.intertn.controller.WorldController;
+import com.example.intertn.model.SexType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,11 @@ public class InterviewFragment extends BaseFragment {
 
         patientText=view.findViewById(R.id.textPatient);
         patientText.setText(worldController.getStartAnswer());
-
+        ImageView imagePatient=view.findViewById(R.id.imagePatient);
+        if(worldController.getCurrentPatientSex()== SexType.MALE) {
+            imagePatient.setImageResource(R.drawable.icon_test);
+        } else if(worldController.getCurrentPatientSex()== SexType.FEMALE)
+            imagePatient.setImageResource(R.drawable.icon_test2);
         view.findViewById(R.id.buttonTreat).setOnClickListener(v -> {
             getAppContract().toBodyScreen(this);
         });

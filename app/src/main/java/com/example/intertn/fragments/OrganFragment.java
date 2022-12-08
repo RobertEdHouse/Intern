@@ -1,51 +1,46 @@
 package com.example.intertn.fragments;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.intertn.R;
 import com.example.intertn.controller.WorldController;
+import com.example.intertn.model.Organs;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OrganFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class OrganFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class OrganFragment extends BaseFragment {
 
     private WorldController worldController;
+    private Organs organ;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ORGAN = "organ";
+    private static final String WORLD_CONTROLLER = "world_controller";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public OrganFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrganFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static OrganFragment newInstance(String param1, String param2) {
+    public static OrganFragment newInstance(Bundle bundle) {
         OrganFragment fragment = new OrganFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(WORLD_CONTROLLER, bundle.getSerializable(WORLD_CONTROLLER));
+        args.putSerializable(ORGAN, bundle.getSerializable(ORGAN));
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +49,8 @@ public class OrganFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            worldController=(WorldController) getArguments().getSerializable(WORLD_CONTROLLER);
+            organ = (Organs) getArguments().getSerializable(ORGAN);
         }
     }
 
@@ -64,5 +59,95 @@ public class OrganFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_organ, container, false);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        hideUi(view);
+        ImageView imageOrgan=view.findViewById(R.id.imageOrgan);
+        TextView textOrgan=view.findViewById(R.id.textNameOrgan);
+        switch (organ){
+            case Brain:
+                textOrgan.setText("Мозок");
+                imageOrgan.setImageResource(R.drawable.brain);
+                break;
+            case Heart:
+                textOrgan.setText("Седце");
+                imageOrgan.setImageResource(R.drawable.brain);
+                break;
+            case Liver:
+                textOrgan.setText("Печінка");
+                imageOrgan.setImageResource(R.drawable.brain);
+                break;
+            case Lungs:
+                textOrgan.setText("Легені");
+                imageOrgan.setImageResource(R.drawable.brain);
+                break;
+            case Stomach:
+                textOrgan.setText("Шлунок");
+                imageOrgan.setImageResource(R.drawable.brain);
+                break;
+            case Intestines:
+                textOrgan.setText("Кишечник");
+                imageOrgan.setImageResource(R.drawable.brain);
+                break;
+        }
+        List<ImageView> points=new ArrayList<>();
+        points.add(view.findViewById(R.id.imagePoint5));
+        points.add(view.findViewById(R.id.imagePoint4));
+        points.add(view.findViewById(R.id.imagePoint3));
+        points.add(view.findViewById(R.id.imagePoint2));
+        points.add(view.findViewById(R.id.imagePoint1));
+
+        int state = worldController.getOrganState(organ);
+        for(int i=0;i<state/2;i++){
+            points.get(i).setImageResource(R.drawable.circle_full);
+        }
+        for(int i=state/2;i<state/2+state%2;i++){
+            points.get(i).setImageResource(R.drawable.circle_half);
+        }
+        for(int i=state/2+state%2;i<5;i++){
+            points.get(i).setImageResource(R.drawable.circle_empty);
+        }
+        view.findViewById(R.id.buttonBack).setOnClickListener(v -> {
+            getAppContract().toBodyScreen(this);
+        });
+
+        List<String>medicines=worldController.getMedicines(organ);
+        for(String m : medicines){
+            Button med=new Button(getActivity());
+            med.setText(m);
+            med.setBackgroundResource(R.drawable.button_shape_selector);
+            med.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            med.setAllCaps(false);
+            med.setTextColor(Color.parseColor("#2bc051"));
+            med.setTextSize(24);
+            med.setOnClickListener(view1 -> worldController.treatPatient(m));
+            LinearLayout l=view.findViewById(R.id.scrollLayoutMedicines);
+            l.addView(med);
+        }
+        if(medicines.isEmpty()){
+            TextView med=new TextView(getActivity());
+            med.setText("Ліків немає");
+            med.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            med.setTextColor(Color.parseColor("#2bc051"));
+            med.setTextSize(24);
+            LinearLayout l=view.findViewById(R.id.scrollLayoutMedicines);
+            l.addView(med);
+        }
+
+
+//        view.findViewById(R.id.buttonToNextPatient).setOnClickListener(v -> {
+//            if(!worldController.nextPatient()){
+//                worldController.nextDay();
+//                getAppContract().toEndScreen(this);
+//            }
+//            else
+//                getAppContract().toInterviewScreen(this);
+//        });
+
+
+
     }
 }

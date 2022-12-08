@@ -1,8 +1,6 @@
 package com.example.intertn.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.intertn.R;
 import com.example.intertn.controller.WorldController;
-import com.example.intertn.service.LoadSaveService;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -26,13 +22,13 @@ import java.util.List;
  * Use the {@link EndFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EndFragment extends BaseFragment implements Serializable {
+public class EndFragment extends BaseFragment {
 
     private static final String WORLD_CONTROLLER = "world_controller";
     private static final String DEBUG_TAG = "log";
-    public transient Context mContext;
 
-    private transient WorldController worldController;
+
+    private WorldController worldController;
 
     public EndFragment() {
         // Required empty public constructor
@@ -75,18 +71,8 @@ public class EndFragment extends BaseFragment implements Serializable {
         frame.setOnClickListener(view1 -> {
             getAppContract().toMessageScreen(this);
         });
+        if (worldController.isGame())
+            worldController.saveGame(getContext());
 
-        if (worldController!= null){
-            launchService(LoadSaveService.ACTION_SAVE_GAME);}
-
-
-    }
-    private void launchService(String action) {
-        mContext=getContext();
-        Intent intent = new Intent(this.getActivity(), LoadSaveService.class);
-        intent.setAction(action);
-        intent.putExtra("fragment",  this);
-        intent.putExtra(WORLD_CONTROLLER,  worldController);
-        requireActivity().startService(intent);
     }
 }

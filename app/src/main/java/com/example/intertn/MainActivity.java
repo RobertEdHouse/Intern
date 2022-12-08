@@ -11,6 +11,7 @@ import com.example.intertn.fragments.EndFragment;
 import com.example.intertn.fragments.InterviewFragment;
 import com.example.intertn.fragments.MenuFragment;
 import com.example.intertn.fragments.MessageFragment;
+import com.example.intertn.fragments.OrganFragment;
 
 import java.util.UUID;
 
@@ -43,6 +44,14 @@ public class MainActivity extends AppCompatActivity implements AppContract {
         if(target!=null)
             bundle = target.getArguments();
         launchFragment(BodyFragment.newInstance(bundle));
+    }
+
+    @Override
+    public void toOrganScreen(Fragment target) {
+        Bundle bundle = null;
+        if(target!=null)
+            bundle = target.getArguments();
+        launchFragment(OrganFragment.newInstance(bundle));
     }
 
     @Override

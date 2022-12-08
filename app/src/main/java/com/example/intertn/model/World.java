@@ -38,10 +38,10 @@ public class World implements Serializable {
         this.CurrentDay = CurrentDay;
         this.TotalDays = TotalDays;
 
-        for (int i = 0; i < countPatient; i++)
-        {
-            Patients.add(initPatient());
-        }
+//        for (int i = 0; i < countPatient; i++)
+//        {
+//            Patients.add(initPatient());
+//        }
         Avatar = new Player(getStandardMedicines(), startMoney);
     }
 
@@ -115,56 +115,19 @@ public class World implements Serializable {
     }
     private List<Symptom> loadSymptoms()
     {
-        List<Integer> answers = new ArrayList<>();
-        answers.add(0);
-        answers.add(1);
         List<Symptom> symptoms = new ArrayList<>();
-        symptoms.add(new Symptom(0, "Головний бiль",answers));
-        answers = new ArrayList<>();
-        answers.add(2);
-        answers.add(3);
-        symptoms.add(new Symptom(1, "Бiль у животi", answers));
-        answers = new ArrayList<>();
-        answers.add(4);
-        answers.add(5);
-        symptoms.add(new Symptom(2, "Слабкість", answers));
         return symptoms;
     }
 
 
     private List<Disease> loadDiseases()
     {
-        Random random = new Random();
-        List<SymptomManifest> listSymptoms = new ArrayList<>();
-        listSymptoms.add(new SymptomManifest(0, random.nextInt(100)));
-        listSymptoms.add(new SymptomManifest(1, random.nextInt(100)));
-        listSymptoms.add(new SymptomManifest(2, random.nextInt(100)));
-
-        List<Integer> listOrgans = new ArrayList<>();
-        listOrgans.add(1);
-        listOrgans.add(0);
-        listOrgans.add(3);
-        listOrgans.add(0);
-        listOrgans.add(0);
-        listOrgans.add(3);
-
         List<Disease> list = new ArrayList<>();
-        Disease disease1 = new Disease(0, "Отруєння", 5, listSymptoms);
-        disease1.setParamOrgan(listOrgans, true);
-        list.add(disease1);
         return list;
     }
     private List<Question> loadQuestions()
     {
-        List<Integer> symptoms = new ArrayList<>();
-        symptoms.add(0);
-        symptoms.add(1);
-
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question(0, "Як себе почуваєте?", symptoms));
-        symptoms = new ArrayList<>();
-        symptoms.add(2);
-        questions.add(new Question(1, "Якi вiдчуття?", symptoms));
         return questions;
     }
 
@@ -172,17 +135,7 @@ public class World implements Serializable {
     {
         //заполнить из файла конфигурации
         List<Medicine> list = new ArrayList<>();
-        Medicine medicine1 = new Medicine(0, "Панкреатин", 3, 100);
-        List<Integer> listOrgans = new ArrayList<>();
-        listOrgans.add(0);
-        listOrgans.add(0);
-        listOrgans.add(3);
-        listOrgans.add(-1);
-        listOrgans.add(0);
-        listOrgans.add(2);
-        list.add(medicine1);
-        medicine1.setParamOrgan(listOrgans);
-        treat.put(medicine1.getType(),Diseases.get(0));
+
         return list;
     }
 
@@ -199,6 +152,13 @@ public class World implements Serializable {
         return;
     }
 
+    public Medicine getMedicine(String type){
+        for (Medicine m:Medicines) {
+            if(m.getType().equals(type))
+                return m;
+        }
+        return null;
+    }
 
     public List<Patient> getCurrentDeadPatients() {
         return currentDeadPatients;
@@ -253,4 +213,22 @@ public class World implements Serializable {
 
     ////////////test load methods
 
+    public void setTestPatient(LinkedList<Patient> patients){
+        this.Patients=patients;
+    }
+    public void setTestMedicines(List<Medicine> medicines){
+        this.Medicines=medicines;
+    }
+    public void setTestQuestion(List<Question> questions){
+        this.Questions=questions;
+    }
+    public void setTestSymptom(List<Symptom> symptoms){
+        this.Symptoms=symptoms;
+    }
+    public void setTestDisease(List<Disease> diseases){
+        this.Diseases=diseases;
+    }
+    public void setTestTreat(String m, Disease d){
+        treat.put(m,Diseases.get(0));
+    }
 }

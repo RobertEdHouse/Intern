@@ -66,6 +66,7 @@ public class MessageFragment extends BaseFragment {
         }
         else {
             mess.setText("Ви програли!");
+            worldController.clear();
             frame.setOnClickListener(view1 -> {
                 getAppContract().toMenuScreen();
             });

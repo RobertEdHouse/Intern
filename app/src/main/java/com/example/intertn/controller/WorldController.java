@@ -3,28 +3,35 @@ package com.example.intertn.controller;
 import android.content.Context;
 
 import com.example.intertn.model.Dialog;
+import com.example.intertn.model.Disease;
 import com.example.intertn.model.ISaveLoad;
+import com.example.intertn.model.Medicine;
+import com.example.intertn.model.Organs;
 import com.example.intertn.model.Patient;
 import com.example.intertn.model.Question;
 import com.example.intertn.model.SaveLoadClass;
+import com.example.intertn.model.SexType;
+import com.example.intertn.model.Symptom;
+import com.example.intertn.model.SymptomManifest;
 import com.example.intertn.model.World;
 import com.example.intertn.model.WorldData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class WorldController implements Serializable {
-    private transient World world;
-    private transient Patient currentPatient;
+    private World world;
+    private Patient currentPatient;
     private int currentDay=0;
-    public WorldController(World world){
-        this.world=world;
-    }
 
     public WorldController(){
         this.world=new World();
-        world.init(0,5,1,1000);
+        setTest();
+        world.init(0,10,1,1000);
+        setTestPatients();
         nextDay();
     }
 
@@ -68,7 +75,7 @@ public class WorldController implements Serializable {
         if(currentIndex+1>=world.getPatients().size()){
             return false;
         }
-        currentPatient=world.getPatients().listIterator(currentIndex).next();
+        currentPatient=(world.getPatients().listIterator(currentIndex+1).next());
         return true;
     }
     public List<String> getCurrentDeadPatient(){
@@ -82,10 +89,11 @@ public class WorldController implements Serializable {
     }
     public void nextDay(){
 
+
+        world.nextDay();
         if(!world.isGame())
             return;
         setCurrentPatient(world.getPatients().get(0));
-        world.nextDay();
         currentDay=world.getCurrentDay();
 
     }
@@ -100,16 +108,169 @@ public class WorldController implements Serializable {
 
     public void saveGame(Context context){
 
+        Runnable r= () -> {
+            ISaveLoad save=new SaveLoadClass(context);
+            save.SaveData(world);
+        };
+        Thread t=new Thread(r);
+        t.start();
     }
 
     public void loadGame(Context context){
-        ISaveLoad save=new SaveLoadClass(context);
-        WorldData worldData=save.LoadData();
-        world.LoadGame(worldData);
+        Runnable r= () -> {
+            ISaveLoad save=new SaveLoadClass(context);
+            WorldData worldData=save.LoadData();
+            if(world==null){
+                world=new World();
+                setTest();
+            }
+            world.LoadGame(worldData);
+            updateInfo();
+        };
+        Thread t=new Thread(r);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public WorldData getWorldFata(){
-        return new WorldData(
-                world.getCurrentDay(), world.getTotalDays(), world.getAvatar(), world.getPatients(), world.getDeadPatients());
+    private void updateInfo(){
+
+        setCurrentPatient(world.getPatients().get(0));
+        currentDay=world.getCurrentDay();
+    }
+
+    private void setTest(){
+        List<Integer> answers = new ArrayList<>();
+        answers.add(0);
+        answers.add(1);
+        List<Symptom> symptoms = new ArrayList<>();
+        symptoms.add(new Symptom(0, "Головний бiль",answers));
+        answers = new ArrayList<>();
+        answers.add(2);
+        answers.add(3);
+        symptoms.add(new Symptom(1, "Бiль у животi", answers));
+        answers = new ArrayList<>();
+        answers.add(4);
+        answers.add(5);
+        symptoms.add(new Symptom(2, "Слабкість", answers));
+        world.setTestSymptom(symptoms);
+
+
+        Random random = new Random();
+        List<SymptomManifest> listSymptoms = new ArrayList<>();
+        listSymptoms.add(new SymptomManifest(0, random.nextInt(100)));
+        listSymptoms.add(new SymptomManifest(1, random.nextInt(100)));
+        listSymptoms.add(new SymptomManifest(2, random.nextInt(100)));
+
+        List<Integer> listOrgans = new ArrayList<>();
+        listOrgans.add(1);
+        listOrgans.add(0);
+        listOrgans.add(3);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(3);
+
+        List<Disease> list = new ArrayList<>();
+        Disease disease1 = new Disease(0, "Отруєння", 5, listSymptoms);
+        disease1.setParamOrgan(listOrgans, true);
+        list.add(disease1);
+        world.setTestDisease(list);
+
+
+        List<Integer> symptom = new ArrayList<>();
+        symptom.add(0);
+        symptom.add(1);
+
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question(0, "Як себе почуваєте?", symptom));
+        symptom = new ArrayList<>();
+        symptom.add(2);
+        questions.add(new Question(1, "Якi вiдчуття?", symptom));
+        world.setTestQuestion(questions);
+
+
+        List<Medicine> listm = new ArrayList<>();
+        Medicine medicine1 = new Medicine(0, "Панкреатин", 3, 100);
+        List<Integer> listOrgans2 = new ArrayList<>();
+        listOrgans2.add(0);
+        listOrgans2.add(0);
+        listOrgans2.add(3);
+        listOrgans2.add(-1);
+        listOrgans2.add(0);
+        listOrgans2.add(2);
+        listm.add(medicine1);
+        medicine1.setParamOrgan(listOrgans2);
+        world.setTestTreat(medicine1.getType(),world.getDiseases().get(0));
+        world.setTestMedicines(listm);
+
+
+
+    }
+
+    private void setTestPatients(){
+        Random random = new Random();
+        LinkedList<Patient> patients = new LinkedList<>();
+        Patient newPatient = new Patient("Мартiн", "Септiм", SexType.MALE, 90, world.getDiseases().get(random.nextInt(world.getDiseases().size())));
+        Patient newPatient2 = new Patient("Алесса", "Сайлентхіловна", SexType.FEMALE, 20, world.getDiseases().get(random.nextInt(world.getDiseases().size())));
+        patients.add(newPatient);
+        patients.add(newPatient2);
+        world.setTestPatient(patients);
+    }
+
+
+    public SexType getCurrentPatientSex(){
+        return currentPatient.getSex();
+    }
+
+    public void clear() {
+        world=null;
+    }
+
+    public int getOrganState(Organs organ){
+        switch (organ){
+            case Brain:
+                return currentPatient.getBrain();
+            case Heart:
+                return currentPatient.getHeart();
+            case Liver:
+                return currentPatient.getLiver();
+            case Lungs:
+                return currentPatient.getLungs();
+            case Stomach:
+                return currentPatient.getStomach();
+            case Intestines:
+                return currentPatient.getIntestines();
+        }
+        return 0;
+    }
+
+    public List<String> getMedicines(Organs organ){
+        List<String> medStr=new ArrayList<>();
+        for (Medicine m:world.getAvatar().getMedicines()) {
+            if(m.Brain>0&&organ.equals(Organs.Brain))
+                medStr.add(m.getType());
+            if(m.Stomach>0&&organ.equals(Organs.Stomach))
+                medStr.add(m.getType());
+            if(m.Heart>0&&organ.equals(Organs.Heart))
+                medStr.add(m.getType());
+            if(m.Intestines>0&&organ.equals(Organs.Intestines))
+                medStr.add(m.getType());
+            if(m.Lungs>0&&organ.equals(Organs.Lungs))
+                medStr.add(m.getType());
+            if(m.Liver>0&&organ.equals(Organs.Liver))
+                medStr.add(m.getType());
+        }
+        return medStr;
+
+    }
+
+    public void treatPatient(String medicineType){
+        Medicine m=world.getMedicine(medicineType);
+        if (m==null)
+            return;
+        world.getAvatar().giveMedicine(currentPatient,m);
     }
 }

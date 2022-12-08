@@ -8,12 +8,12 @@ public class Medicine implements Serializable {
     private String Type;
     private int Count;
     private int Price;
-    private int Brain = 0;
-    private int Heart = 0;
-    private int Intestines = 0;
-    private int Liver = 0;
-    private int Lungs = 0;
-    private int Stomach = 0;
+    public int Brain = 0;
+    public int Heart = 0;
+    public int Intestines = 0;
+    public int Liver = 0;
+    public int Lungs = 0;
+    public int Stomach = 0;
 
     public Medicine(int id, String type, int count, int price) {
         Id = id;

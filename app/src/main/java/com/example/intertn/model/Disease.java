@@ -62,18 +62,18 @@ public class Disease implements Serializable {
             Stomach = list.get(5);
         Temperature = change;
     }
-    public void raiseStage()
+    public void raiseStage(int Immunity)
     {
         Random rand = new Random();
-        StagePercent += rand.nextInt(30-5)+5;
+        StagePercent += Math.ceil(((100-Immunity)/100)*rand.nextInt(30-5)+5);
         if (StagePercent > 100)
             StagePercent = 100;
     }
 
-    public void downStage()
+    public void downStage(int Immunity)
     {
         Random rand = new Random();
-        StagePercent -= rand.nextInt(30-5)+5;
+        StagePercent -= Math.ceil(((Immunity)/100)*rand.nextInt(30-5)+5);
         if (StagePercent < 0)
             StagePercent = 0;
     }
@@ -90,46 +90,60 @@ public class Disease implements Serializable {
 
     public void destroyOrgans(Patient patient)
     {
-        int k = 100 / 6;
-        int currentStage = StagePercent / (100 / MaxStage)+1;
-        for (int i = 0; i < 4; i++)
-        {
-
-        }
+//        int k = 100 / 6;
+//        int currentStage = StagePercent / (100 / MaxStage)+1;
+//        for (int i = 0; i < 4; i++)
+//        {
+//
+//        }
         int stageOrgan=0;
-
-        stageOrgan=patient.getBrain()-Brain;
+        int k=0;
+        if(patient.getImmunity()>50)
+            k=1;
+        stageOrgan= (int) Math.ceil(patient.getBrain()+k-Brain);
         if (stageOrgan >= 0)
             patient.setBrain(stageOrgan);
+        else if (stageOrgan > 10)
+            patient.setBrain(10);
         else
             patient.setBrain(0);
 
-        stageOrgan=patient.getHeart()-Heart;
-        if (stageOrgan >= 0)
+        stageOrgan=(int) Math.ceil((patient.getHeart()+k-Heart));
+        if (stageOrgan > 10)
+            patient.setHeart(10);
+        else if (stageOrgan >= 0)
             patient.setHeart(stageOrgan);
         else
             patient.setHeart(0);
 
-        stageOrgan=patient.getLiver()-Liver;
-        if (stageOrgan >= 0)
+        stageOrgan=(int) Math.ceil((patient.getLiver()+k-Liver));
+        if (stageOrgan > 10)
+            patient.setLiver(10);
+        else if (stageOrgan >= 0)
             patient.setLiver(stageOrgan);
         else
             patient.setLiver(0);
 
-        stageOrgan=patient.getLungs()-Lungs;
-        if (stageOrgan >= 0)
+        stageOrgan=(int) Math.ceil(patient.getLungs()+k-Lungs);
+        if (stageOrgan > 10)
+            patient.setLungs(10);
+        else if (stageOrgan >= 0)
             patient.setLungs(stageOrgan);
         else
             patient.setLungs(0);
 
-        stageOrgan=patient.getStomach()-Stomach;
-        if (stageOrgan >= 0)
+        stageOrgan=(int) Math.ceil((patient.getStomach()+k-Stomach));
+        if (stageOrgan > 10)
+            patient.setStomach(10);
+        else if (stageOrgan >= 0)
             patient.setStomach(stageOrgan);
         else
             patient.setStomach(0);
 
-        stageOrgan=patient.getIntestines()-Intestines;
-        if (stageOrgan >= 0)
+        stageOrgan=(int) Math.ceil((patient.getIntestines()+k-Intestines));
+        if (stageOrgan > 10)
+            patient.setIntestines(10);
+        else if (stageOrgan >= 0)
             patient.setIntestines(stageOrgan);
         else
             patient.setIntestines(0);
