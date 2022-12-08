@@ -76,8 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="500dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/body_test2" />
+            android:scaleType="fitEnd"
+            android:src="@drawable/body2" />
 
         <TextView
             android:id="@+id/textTemperature"
@@ -106,7 +106,7 @@
         <Button
             android:id="@+id/buttonToDialog"
             style="@style/ButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
@@ -118,13 +118,13 @@
         <Button
             android:id="@+id/buttonToNextPatient"
             style="@style/ButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_shape_selector"
-            android:textColor="@drawable/button_textcolor_selector"
             android:text="Наступний"
+            android:textColor="@drawable/button_textcolor_selector"
             android:textSize="20sp" />
     </LinearLayout>
 
