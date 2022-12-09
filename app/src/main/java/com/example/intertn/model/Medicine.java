@@ -14,12 +14,14 @@ public class Medicine implements Serializable {
     public int Liver = 0;
     public int Lungs = 0;
     public int Stomach = 0;
+    private int Power=0;
 
-    public Medicine(int id, String type, int count, int price) {
+    public Medicine(int id, String type, int count, int price,int power) {
         Id = id;
         Type = type;
         Count = count;
         Price = price;
+        Power=power;
     }
 
     public void setParamOrgan(List<Integer> list)
@@ -39,55 +41,72 @@ public class Medicine implements Serializable {
     }
     public void used()
     {
-        Count--;
+        if(Count!=0)
+            Count--;
     }
-    public void add(int count)
+    public void add()
     {
-        Count+=count;
+        Count++;
     }
+    public Medicine getPill(){
+        Medicine pill=new Medicine(this.Id,this.Type,1,this.Price,this.Power);
+        pill.Brain=this.Brain;
+        pill.Heart=this.Heart;
+        pill.Intestines=this.Intestines;
+        pill.Lungs=this.Lungs;
+        pill.Liver=this.Liver;
+        pill.Stomach=this.Stomach;
+        return pill;
+    }
+
 
     public void treatOrgans(Patient patient)
     {
         int stageOrgan=0;
 
         stageOrgan=patient.getBrain()+Brain;
-        if (stageOrgan >= 10)
+        if (stageOrgan < 10)
             patient.setBrain(stageOrgan);
         else
             patient.setBrain(10);
 
         stageOrgan=patient.getHeart()+Heart;
-        if (stageOrgan >= 10)
+        if (stageOrgan < 10)
             patient.setHeart(stageOrgan);
         else
             patient.setHeart(10);
 
         stageOrgan=patient.getLiver()+Liver;
-        if (stageOrgan >= 10)
+        if (stageOrgan < 10)
             patient.setLiver(stageOrgan);
         else
             patient.setLiver(10);
 
         stageOrgan=patient.getLungs()+Lungs;
-        if (stageOrgan >= 10)
+        if (stageOrgan < 10)
             patient.setLungs(stageOrgan);
         else
             patient.setLungs(10);
 
         stageOrgan=patient.getStomach()+Stomach;
-        if (stageOrgan >= 10)
+        if (stageOrgan < 10)
             patient.setStomach(stageOrgan);
         else
             patient.setStomach(10);
 
         stageOrgan=patient.getIntestines()+Intestines;
-        if (stageOrgan >= 10)
+        if (stageOrgan < 10)
             patient.setIntestines(stageOrgan);
         else
             patient.setIntestines(10);
     }
+
     public int getId() {
         return Id;
+    }
+
+    public int getPower() {
+        return Power;
     }
 
     public String getType() {

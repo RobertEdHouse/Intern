@@ -10,28 +10,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.example.intertn.R;
 import com.example.intertn.controller.WorldController;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EndFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class EndFragment extends BaseFragment {
 
     private static final String WORLD_CONTROLLER = "world_controller";
-    private static final String DEBUG_TAG = "log";
-
 
     private WorldController worldController;
 
     public EndFragment() {
-        // Required empty public constructor
     }
 
     public static EndFragment newInstance(Bundle bundle) {
@@ -48,7 +40,6 @@ public class EndFragment extends BaseFragment {
         if (getArguments() != null) {
             worldController=(WorldController) getArguments().getSerializable(WORLD_CONTROLLER);
         }
-
     }
 
     @Override
@@ -64,15 +55,16 @@ public class EndFragment extends BaseFragment {
         TextView mess=view.findViewById(R.id.textEndMessage);
         FrameLayout frame=view.findViewById(R.id.layoutEndMessage);
 
+        List<String> healedPatient=worldController.getCurrentHealedPatient();
+        for(String s : healedPatient){
+            mess.setText(mess.getText()+s);
+        }
         List<String> deadPatient=worldController.getCurrentDeadPatient();
         for(String s : deadPatient){
             mess.setText(mess.getText()+s);
         }
-        frame.setOnClickListener(view1 -> {
-            getAppContract().toMessageScreen(this);
-        });
+        frame.setOnClickListener(view1 -> getAppContract().toMessageScreen(this));
         if (worldController.isGame())
             worldController.saveGame(getContext());
-
     }
 }

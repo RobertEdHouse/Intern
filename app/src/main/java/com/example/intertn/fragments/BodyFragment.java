@@ -1,5 +1,6 @@
 package com.example.intertn.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,27 +21,17 @@ import java.util.List;
 public class BodyFragment extends BaseFragment {
     private static final String WORLD_CONTROLLER = "world_controller";
     private static final String ORGAN = "organ";
-    private static final String DEBUG_TAG = "log";
 
 
     private WorldController worldController;
-    private int countSlides=0;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
     private TextView dialogsText;
     public BodyFragment() {
-        // Required empty public constructor
     }
 
     public static BodyFragment newInstance(Bundle bundle) {
         BodyFragment fragment = new BodyFragment();
         Bundle args = new Bundle();
         args.putSerializable(WORLD_CONTROLLER, bundle.getSerializable(WORLD_CONTROLLER));
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,7 +41,6 @@ public class BodyFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             worldController=(WorldController) getArguments().getSerializable(WORLD_CONTROLLER);
-
         }
     }
 
@@ -60,6 +50,7 @@ public class BodyFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_body, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         hideUi(view);
@@ -69,9 +60,7 @@ public class BodyFragment extends BaseFragment {
         } else if(worldController.getCurrentPatientSex()== SexType.FEMALE)
             imagePatient.setImageResource(R.drawable.icon_test2);
 
-        view.findViewById(R.id.buttonToDialog).setOnClickListener(v -> {
-            getAppContract().toInterviewScreen(this);
-        });
+        view.findViewById(R.id.buttonToDialog).setOnClickListener(v -> getAppContract().toInterviewScreen(this));
         view.findViewById(R.id.buttonToNextPatient).setOnClickListener(v -> {
             if(!worldController.nextPatient()){
                 worldController.nextDay();
@@ -83,31 +72,37 @@ public class BodyFragment extends BaseFragment {
 
         view.findViewById(R.id.buttonBrain).setOnClickListener(v -> {
             Bundle args = getArguments();
+            assert args != null;
             args.putSerializable(ORGAN, Organs.Brain);
             getAppContract().toOrganScreen(this);
         });
         view.findViewById(R.id.buttonHeart).setOnClickListener(v -> {
             Bundle args = getArguments();
+            assert args != null;
             args.putSerializable(ORGAN, Organs.Heart);
             getAppContract().toOrganScreen(this);
         });
         view.findViewById(R.id.buttonStomach).setOnClickListener(v -> {
             Bundle args = getArguments();
+            assert args != null;
             args.putSerializable(ORGAN, Organs.Stomach);
             getAppContract().toOrganScreen(this);
         });
         view.findViewById(R.id.buttonIntestines).setOnClickListener(v -> {
             Bundle args = getArguments();
+            assert args != null;
             args.putSerializable(ORGAN, Organs.Intestines);
             getAppContract().toOrganScreen(this);
         });
         view.findViewById(R.id.buttonLiver).setOnClickListener(v -> {
             Bundle args = getArguments();
+            assert args != null;
             args.putSerializable(ORGAN, Organs.Liver);
             getAppContract().toOrganScreen(this);
         });
         view.findViewById(R.id.buttonLungs).setOnClickListener(v -> {
             Bundle args = getArguments();
+            assert args != null;
             args.putSerializable(ORGAN, Organs.Lungs);
             getAppContract().toOrganScreen(this);
         });
@@ -119,6 +114,7 @@ public class BodyFragment extends BaseFragment {
         setDialogsText();
     }
 
+    @SuppressLint("SetTextI18n")
     private void setDialogsText(){
         List<String> listDialogs=worldController.getDialogs();
         for(String d : listDialogs){

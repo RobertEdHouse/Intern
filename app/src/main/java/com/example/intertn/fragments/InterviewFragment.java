@@ -1,5 +1,6 @@
 package com.example.intertn.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,7 @@ import java.util.List;
 
 public class InterviewFragment extends BaseFragment {
 
-    private int questionId;
     private static final String WORLD_CONTROLLER = "world_controller";
-    private static final String QUESTION_ID = "question_id";
 
     private TextView patientText;
 
@@ -33,7 +32,6 @@ public class InterviewFragment extends BaseFragment {
         InterviewFragment fragment = new InterviewFragment();
         Bundle args = new Bundle();
         args.putSerializable(WORLD_CONTROLLER, bundle.getSerializable(WORLD_CONTROLLER));
-        //args.putInt(QUESTION_ID, bundle.getInt(QUESTION_ID));
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,13 +39,11 @@ public class InterviewFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState==null) {
+            assert getArguments() != null;
             worldController = (WorldController) getArguments().getSerializable(WORLD_CONTROLLER);
-            //questionId=getArguments().getInt(QUESTION_ID);
         }
-        else {
+        else
             worldController = (WorldController) savedInstanceState.getSerializable(WORLD_CONTROLLER);
-            //questionId=savedInstanceState.getInt(QUESTION_ID);
-        }
     }
     @Nullable
     @Override
@@ -60,9 +56,9 @@ public class InterviewFragment extends BaseFragment {
                 container,
                 false
         );
-
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -75,37 +71,21 @@ public class InterviewFragment extends BaseFragment {
             imagePatient.setImageResource(R.drawable.icon_test);
         } else if(worldController.getCurrentPatientSex()== SexType.FEMALE)
             imagePatient.setImageResource(R.drawable.icon_test2);
-        view.findViewById(R.id.buttonTreat).setOnClickListener(v -> {
-            getAppContract().toBodyScreen(this);
-        });
+        view.findViewById(R.id.buttonTreat).setOnClickListener(v -> getAppContract().toBodyScreen(this));
 
         List<Button> questionButtons=new ArrayList<>();
         questionButtons.add(view.findViewById(R.id.buttonQuestion1));
-        questionButtons.get(0).setOnClickListener(v->{
-            patientText.setText(worldController.getAnswer(0)+"\n");
-        });
+        questionButtons.get(0).setOnClickListener(v-> patientText.setText(worldController.getAnswer(0)+"\n"));
         questionButtons.add(view.findViewById(R.id.buttonQuestion2));
-        questionButtons.get(1).setOnClickListener(v->{
-            patientText.setText(worldController.getAnswer(1)+"\n");
-        });
+        questionButtons.get(1).setOnClickListener(v-> patientText.setText(worldController.getAnswer(1)+"\n"));
         questionButtons.add(view.findViewById(R.id.buttonQuestion3));
-        questionButtons.get(2).setOnClickListener(v->{
-            patientText.setText(worldController.getAnswer(2)+"\n");
-        });
+        questionButtons.get(2).setOnClickListener(v-> patientText.setText(worldController.getAnswer(2)+"\n"));
         questionButtons.add(view.findViewById(R.id.buttonQuestion4));
-        questionButtons.get(3).setOnClickListener(v->{
-            patientText.setText(worldController.getAnswer(3)+"\n");
-        });
+        questionButtons.get(3).setOnClickListener(v-> patientText.setText(worldController.getAnswer(3)+"\n"));
 
         setQuestionText(questionButtons);
     }
 
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
     private void setQuestionText(List<Button> questionButtons){
         List<String> questions=worldController.getQuestion();

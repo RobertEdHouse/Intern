@@ -1,8 +1,7 @@
 package com.example.intertn.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,10 @@ import com.example.intertn.controller.WorldController;
 
 public class MessageFragment extends BaseFragment {
     private static final String WORLD_CONTROLLER = "world_controller";
-    private static final String DEBUG_TAG = "log";
-
-    CountDownTimer countDownTimer;
-    private Runnable runnable;
-    private Handler handler;
 
     private WorldController worldController;
 
     public MessageFragment() {
-        // Required empty public constructor
     }
 
     public static MessageFragment newInstance(Bundle bundle) {
@@ -52,6 +45,7 @@ public class MessageFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         hideUi(view);
@@ -60,16 +54,12 @@ public class MessageFragment extends BaseFragment {
 
         if(worldController.isGame()){
             mess.setText("День "+worldController.getCurrentDay());
-            frame.setOnClickListener(view1 -> {
-                getAppContract().toInterviewScreen(this);
-            });
+            frame.setOnClickListener(view1 -> getAppContract().toInterviewScreen(this));
         }
         else {
-            mess.setText("Ви програли!");
+            mess.setText("Кінець гри!\n\n"+worldController.getHistory());
             worldController.clear();
-            frame.setOnClickListener(view1 -> {
-                getAppContract().toMenuScreen();
-            });
+            frame.setOnClickListener(view1 -> getAppContract().toMenuScreen());
         }
 
     }

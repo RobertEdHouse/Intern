@@ -16,28 +16,19 @@ public class MenuFragment extends BaseFragment {
 
     private WorldController worldController;
     private static final String WORLD_CONTROLLER = "world_controller";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public MenuFragment() {
 
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //buttonNewGame
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
     }
 
@@ -51,6 +42,7 @@ public class MenuFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable(WORLD_CONTROLLER,worldController);
             this.setArguments(bundle);
+            worldController.saveGame(getContext());
             getAppContract().toMessageScreen(this);
         });
         view.findViewById(R.id.buttonLoadGame).setOnClickListener(v -> {
@@ -65,7 +57,6 @@ public class MenuFragment extends BaseFragment {
     }
 
     private WorldController startNewGame(){
-        WorldController worldController=new WorldController();
-        return worldController;
+        return new WorldController();
     }
 }

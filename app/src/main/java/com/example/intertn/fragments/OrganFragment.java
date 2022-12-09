@@ -32,10 +32,8 @@ public class OrganFragment extends BaseFragment {
 
 
     public OrganFragment() {
-        // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static OrganFragment newInstance(Bundle bundle) {
         OrganFragment fragment = new OrganFragment();
         Bundle args = new Bundle();
@@ -57,7 +55,6 @@ public class OrganFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_organ, container, false);
     }
 
@@ -110,21 +107,29 @@ public class OrganFragment extends BaseFragment {
         for(int i=state/2+state%2;i<5;i++){
             points.get(i).setImageResource(R.drawable.circle_empty);
         }
-        view.findViewById(R.id.buttonBack).setOnClickListener(v -> {
-            getAppContract().toBodyScreen(this);
-        });
+        view.findViewById(R.id.buttonBack).setOnClickListener(v -> getAppContract().toBodyScreen(this));
 
+        setMedicinesList(view);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setMedicinesList(View view){
+
+        LinearLayout l=view.findViewById(R.id.scrollLayoutMedicines);
         List<String>medicines=worldController.getMedicines(organ);
+        l.removeAllViews();
         for(String m : medicines){
             Button med=new Button(getActivity());
-            med.setText(m);
+            med.setText(m + " " + worldController.getMedicineCount(m));
             med.setBackgroundResource(R.drawable.button_shape_selector);
             med.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             med.setAllCaps(false);
             med.setTextColor(Color.parseColor("#2bc051"));
             med.setTextSize(24);
-            med.setOnClickListener(view1 -> worldController.treatPatient(m));
-            LinearLayout l=view.findViewById(R.id.scrollLayoutMedicines);
+            med.setOnClickListener(view1 -> {
+                worldController.treatPatient(m);
+                setMedicinesList(view);
+            });
             l.addView(med);
         }
         if(medicines.isEmpty()){
@@ -133,21 +138,7 @@ public class OrganFragment extends BaseFragment {
             med.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             med.setTextColor(Color.parseColor("#2bc051"));
             med.setTextSize(24);
-            LinearLayout l=view.findViewById(R.id.scrollLayoutMedicines);
             l.addView(med);
         }
-
-
-//        view.findViewById(R.id.buttonToNextPatient).setOnClickListener(v -> {
-//            if(!worldController.nextPatient()){
-//                worldController.nextDay();
-//                getAppContract().toEndScreen(this);
-//            }
-//            else
-//                getAppContract().toInterviewScreen(this);
-//        });
-
-
-
     }
 }

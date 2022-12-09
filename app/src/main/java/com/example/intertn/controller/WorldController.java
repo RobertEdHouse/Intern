@@ -25,7 +25,6 @@ import java.util.Random;
 public class WorldController implements Serializable {
     private World world;
     private Patient currentPatient;
-    private int currentDay=0;
 
     public WorldController(){
         this.world=new World();
@@ -42,6 +41,7 @@ public class WorldController implements Serializable {
         }
         return listQuestionString;
     }
+
     public String getStartAnswer(){
         return currentPatient.answer(null).getText();
     }
@@ -49,8 +49,23 @@ public class WorldController implements Serializable {
     public String getAnswer(int id_question){
         if(world.getQuestions().size()<=id_question)
             return "Не знаю...";
-        return world.getAvatar().ask(world.getQuestions().get(id_question),currentPatient,currentDay).getText();
+        return world.getAvatar().ask(world.getQuestions().get(id_question),currentPatient,world.getCurrentDay()).getText();
     }
+
+    public List<String> getDialogs(){
+        List<String>dialogsStr=new ArrayList<>();
+        List<Dialog>dialogs=world.getAvatar().getDialogs(world.getCurrentDay(),currentPatient);
+        for (Dialog d : dialogs){
+            String str="[Питання]\n"+d.getQuestion()+"\n";
+            str+="[Пацієнт]\n"+d.getAnswer()+"\n";
+            dialogsStr.add(str);
+        }
+        return dialogsStr;
+    }
+
+
+
+
 
     public void setCurrentPatient(Patient patient){
         currentPatient=patient;
@@ -60,16 +75,6 @@ public class WorldController implements Serializable {
         return currentPatient.getTemperature();
     }
 
-    public List<String> getDialogs(){
-        List<String>dialogsStr=new ArrayList<>();
-        List<Dialog>dialogs=world.getAvatar().getDialogs(currentDay,currentPatient);
-        for (Dialog d : dialogs){
-            String str="[Питання]\n"+d.getQuestion()+"\n";
-            str+="[Пацієнт]\n"+d.getAnswer()+"\n";
-            dialogsStr.add(str);
-        }
-        return dialogsStr;
-    }
     public boolean nextPatient(){
         int currentIndex=world.getPatients().indexOf(currentPatient);
         if(currentIndex+1>=world.getPatients().size()){
@@ -82,24 +87,40 @@ public class WorldController implements Serializable {
         List<String> patients=new ArrayList<>();
         for(Patient patient : world.getCurrentDeadPatients()){
             String str=patient.getFirstName()+" "+patient.getLastName()+" ";
-            str+="загинув!\n";
+            if(patient.getSex()==SexType.MALE)
+                str+="загинув!\n";
+            if(patient.getSex()==SexType.FEMALE)
+                str+="загинула!\n";
             patients.add(str);
         }
         return patients;
     }
-    public void nextDay(){
 
+    public List<String> getCurrentHealedPatient(){
+        List<String> patients=new ArrayList<>();
+        for(Patient patient : world.getCurrentHealedPatients()){
+            String str=patient.getFirstName()+" "+patient.getLastName()+" ";
+            if(patient.getSex()==SexType.MALE)
+                str+="вилікувався!\n";
+            if(patient.getSex()==SexType.FEMALE)
+                str+="вилікувалась!\n";
+            patients.add(str);
+        }
+        return patients;
+    }
+
+
+    public void nextDay(){
 
         world.nextDay();
         if(!world.isGame())
             return;
-        setCurrentPatient(world.getPatients().get(0));
-        currentDay=world.getCurrentDay();
+        updateInfo();
 
     }
 
     public int getCurrentDay(){
-        return currentDay;
+        return world.getCurrentDay();
     }
 
     public boolean isGame() {
@@ -115,6 +136,7 @@ public class WorldController implements Serializable {
         Thread t=new Thread(r);
         t.start();
     }
+
 
     public void loadGame(Context context){
         Runnable r= () -> {
@@ -139,8 +161,7 @@ public class WorldController implements Serializable {
     private void updateInfo(){
 
         setCurrentPatient(world.getPatients().get(0));
-        currentDay=world.getCurrentDay();
-    }
+}
 
     private void setTest(){
         List<Integer> answers = new ArrayList<>();
@@ -177,6 +198,7 @@ public class WorldController implements Serializable {
         Disease disease1 = new Disease(0, "Отруєння", 5, listSymptoms);
         disease1.setParamOrgan(listOrgans, true);
         list.add(disease1);
+
         world.setTestDisease(list);
 
 
@@ -193,7 +215,7 @@ public class WorldController implements Serializable {
 
 
         List<Medicine> listm = new ArrayList<>();
-        Medicine medicine1 = new Medicine(0, "Панкреатин", 3, 100);
+        Medicine medicine1 = new Medicine(0, "Панкреатин", 10, 100,90);
         List<Integer> listOrgans2 = new ArrayList<>();
         listOrgans2.add(0);
         listOrgans2.add(0);
@@ -201,6 +223,18 @@ public class WorldController implements Serializable {
         listOrgans2.add(-1);
         listOrgans2.add(0);
         listOrgans2.add(2);
+        listm.add(medicine1);
+        medicine1.setParamOrgan(listOrgans2);
+        world.setTestTreat(medicine1.getType(),world.getDiseases().get(0));
+
+        medicine1 = new Medicine(1, "Цитрамон", 10, 100,20);
+        listOrgans2 = new ArrayList<>();
+        listOrgans2.add(3);
+        listOrgans2.add(0);
+        listOrgans2.add(0);
+        listOrgans2.add(0);
+        listOrgans2.add(0);
+        listOrgans2.add(0);
         listm.add(medicine1);
         medicine1.setParamOrgan(listOrgans2);
         world.setTestTreat(medicine1.getType(),world.getDiseases().get(0));
@@ -213,13 +247,25 @@ public class WorldController implements Serializable {
     private void setTestPatients(){
         Random random = new Random();
         LinkedList<Patient> patients = new LinkedList<>();
-        Patient newPatient = new Patient("Мартiн", "Септiм", SexType.MALE, 90, world.getDiseases().get(random.nextInt(world.getDiseases().size())));
-        Patient newPatient2 = new Patient("Алесса", "Сайлентхіловна", SexType.FEMALE, 20, world.getDiseases().get(random.nextInt(world.getDiseases().size())));
+        Patient newPatient = new Patient("Мартiн", "Септiм", SexType.MALE, 90, getCopyDisease(world.getDiseases().get(random.nextInt(world.getDiseases().size()))));
+        Patient newPatient2 = new Patient("Алесса", "Сайлентхіловна", SexType.FEMALE, 20,getCopyDisease(world.getDiseases().get(random.nextInt(world.getDiseases().size()))));
         patients.add(newPatient);
         patients.add(newPatient2);
         world.setTestPatient(patients);
     }
 
+    private Disease getCopyDisease(Disease d){
+        Disease dis = new Disease(d.getId(),d.getName(),d.getMaxStage(),d.getListSymptom());
+        List<Integer> listOrgans = new ArrayList<>();
+        listOrgans.add(1);
+        listOrgans.add(0);
+        listOrgans.add(3);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(3);
+        dis.setParamOrgan(listOrgans,true);
+        return dis;
+    }
 
     public SexType getCurrentPatientSex(){
         return currentPatient.getSex();
@@ -266,11 +312,19 @@ public class WorldController implements Serializable {
         return medStr;
 
     }
-
+    public int getMedicineCount(String type){
+        return world.getAvatar().getMedicineCount(type);
+    }
     public void treatPatient(String medicineType){
-        Medicine m=world.getMedicine(medicineType);
-        if (m==null)
-            return;
-        world.getAvatar().giveMedicine(currentPatient,m);
+        world.getAvatar().giveMedicine(currentPatient,medicineType);
+    }
+
+    public String getHistory(){
+        String str="";
+
+        str+="Вилікувано: "+world.getHealedPatients().size()+"\n";
+        str+="Загинуло: "+world.getDeadPatients().size()+"\n";
+        str+="Залишилось хворими: "+world.getPatients().size();
+        return str;
     }
 }

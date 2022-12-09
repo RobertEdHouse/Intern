@@ -70,10 +70,10 @@ public class Disease implements Serializable {
             StagePercent = 100;
     }
 
-    public void downStage(int Immunity)
+    public void downStage(int Immunity,int power)
     {
         Random rand = new Random();
-        StagePercent -= Math.ceil(((Immunity)/100)*rand.nextInt(30-5)+5);
+        StagePercent -= Math.ceil((power/100)*((Immunity)/100)*rand.nextInt(30-10)+10);
         if (StagePercent < 0)
             StagePercent = 0;
     }

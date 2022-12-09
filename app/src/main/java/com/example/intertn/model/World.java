@@ -14,6 +14,7 @@ public class World implements Serializable {
     private Player Avatar;
     private LinkedList<Patient> Patients;
     private List<Patient> DeadPatients;
+    private List<Patient> HealedPatients;
     private List<Symptom> Symptoms;
     private List<Disease> Diseases;
     private List<Question> Questions;
@@ -21,15 +22,20 @@ public class World implements Serializable {
 
     private Map<String, Disease> treat;
     private List<Patient> currentDeadPatients;
-    private boolean isGame = true;
 
+
+
+    private List<Patient> currentHealedPatients;
+    private boolean isGame = true;
+    private boolean endGame = false;
     public World()
     {
         Patients = new LinkedList<>();
         DeadPatients = new ArrayList<>();
+        HealedPatients=new ArrayList<>();
         //заполняем Symptoms, Diseases, Questions,
         //Medicines из файла конфигурации
-        treat=new HashMap<String,Disease>();
+        treat=new HashMap<>();
         loadFromConfig();
     }
 
@@ -62,14 +68,22 @@ public class World implements Serializable {
     public void nextDay()
     {
         currentDeadPatients=new ArrayList<>();
-        for (Patient patient : Patients)
+        currentHealedPatients=new ArrayList<>();
+        for (Patient patient : getCopyPatients())
         {
-            State state=patient.getCurrentState();
+            State previousState=patient.getCurrentState();
             patient.nextDay(Symptoms, treat);
-            if (patient.getCurrentState() == State.DEAD && state != State.DEAD)
+            if (patient.getCurrentState() == State.DEAD && previousState == State.SICK)
             {
                 currentDeadPatients.add(patient);
                 DeadPatients.add(patient);
+                Patients.remove(patient);
+                if (Patients.size() == 0)
+                    break;
+            }
+            else if(patient.getCurrentState() == State.NORMAL && previousState == State.SICK){
+                currentHealedPatients.add(patient);
+                HealedPatients.add(patient);
                 Patients.remove(patient);
                 if (Patients.size() == 0)
                     break;
@@ -89,7 +103,12 @@ public class World implements Serializable {
         if (Avatar.getMoney() < 10 && Avatar.getMedicines().size() == 0)
             gameOver();
     }
-
+    private List<Patient> getCopyPatients(){
+        List<Patient> patients = new ArrayList<>();
+        for(Patient d:Patients)
+            patients.add(d);
+        return patients;
+    }
     public void SaveGame()
     {
 
@@ -143,6 +162,7 @@ public class World implements Serializable {
     {
         //Console.WriteLine("End Game");
         isGame = false;
+        endGame=true;
         return;
     }
     public void gameOver()
@@ -152,14 +172,19 @@ public class World implements Serializable {
         return;
     }
 
-    public Medicine getMedicine(String type){
-        for (Medicine m:Medicines) {
-            if(m.getType().equals(type))
-                return m;
-        }
-        return null;
+
+
+    public boolean isEndGame() {
+        return endGame;
     }
 
+    public List<Patient> getHealedPatients() {
+        return HealedPatients;
+    }
+
+    public List<Patient> getCurrentHealedPatients() {
+        return currentHealedPatients;
+    }
     public List<Patient> getCurrentDeadPatients() {
         return currentDeadPatients;
     }
@@ -184,24 +209,12 @@ public class World implements Serializable {
         return DeadPatients;
     }
 
-    public List<Symptom> getSymptoms() {
-        return Symptoms;
-    }
-
     public List<Disease> getDiseases() {
         return Diseases;
     }
 
     public List<Question> getQuestions() {
         return Questions;
-    }
-
-    public List<Medicine> getMedicines() {
-        return Medicines;
-    }
-
-    public Map<String, Disease> getTreat() {
-        return treat;
     }
 
     public boolean isGame() {

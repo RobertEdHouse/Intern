@@ -28,18 +28,36 @@ public class Player implements Serializable {
         {
             if (m.getId()==medicine.getId())
             {
-                m.add(medicine.getCount());
+                m.add();
             }
         }
         Medicines.add(medicine);
         return true;
     }
-    public void giveMedicine(Patient patient,Medicine medicine)
+    public void giveMedicine(Patient patient,String med)
     {
-        patient.takeMedicine(medicine);
+        Medicine medicine=getMedicine(med);
+        if(medicine==null)
+            return;
+        patient.takeMedicine(medicine.getPill());
         medicine.used();
+        if(medicine.getCount()==0)
+            Medicines.remove(medicine);
     }
-
+    private Medicine getMedicine(String type){
+        for (Medicine m:Medicines) {
+            if(m.getType().compareTo(type)==0)
+                return m;
+        }
+        return null;
+    }
+    public int getMedicineCount(String type){
+        for (Medicine m:Medicines) {
+            if(m.getType().compareTo(type)==0)
+                return m.getCount();
+        }
+        return 0;
+    }
     public Answer ask(Question question,Patient patient,int Day)
     {
         Answer answer = patient.answer(question);
@@ -64,18 +82,7 @@ public class Player implements Serializable {
         return Dialogs.get(dialogId);
     }
 
-    public List<Dialog> getDialogs(Patient patient)
-    {
-        List<Dialog> dialogs = new ArrayList<>();
-        for (Dialog dialog : Dialogs)
-        {
-            if (dialog.getPatient().equals(patient))
-            {
-                dialogs.add(dialog);
-            }
-        }
-        return dialogs;
-    }
+
     public List<Dialog> getDialogs(int Day,Patient patient)
     {
         List<Dialog> dialogs = new ArrayList<>();
