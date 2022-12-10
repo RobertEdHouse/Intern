@@ -117,6 +117,8 @@ public class OrganFragment extends BaseFragment {
 
         LinearLayout l=view.findViewById(R.id.scrollLayoutMedicines);
         List<String>medicines=worldController.getMedicines(organ);
+        TextView textCountAction=view.findViewById(R.id.textActionCount);
+        textCountAction.setText("Дій залишилось: "+worldController.getCountAction());
         l.removeAllViews();
         for(String m : medicines){
             Button med=new Button(getActivity());
@@ -129,6 +131,7 @@ public class OrganFragment extends BaseFragment {
             med.setOnClickListener(view1 -> {
                 worldController.treatPatient(m);
                 setMedicinesList(view);
+                textCountAction.setText("Дій залишилось: "+worldController.getCountAction());
             });
             l.addView(med);
         }
@@ -140,5 +143,6 @@ public class OrganFragment extends BaseFragment {
             med.setTextSize(24);
             l.addView(med);
         }
+
     }
 }

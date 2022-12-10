@@ -36,9 +36,9 @@ public class MenuFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         hideUi(view);
-
+        worldController=startNewGame();
         view.findViewById(R.id.buttonNewGame).setOnClickListener(v -> {
-            worldController=startNewGame();
+
             Bundle bundle = new Bundle();
             bundle.putSerializable(WORLD_CONTROLLER,worldController);
             this.setArguments(bundle);
@@ -46,7 +46,6 @@ public class MenuFragment extends BaseFragment {
             getAppContract().toMessageScreen(this);
         });
         view.findViewById(R.id.buttonLoadGame).setOnClickListener(v -> {
-            worldController=new WorldController();
             Bundle bundle = new Bundle();
             bundle.putSerializable(WORLD_CONTROLLER,worldController);
             this.setArguments(bundle);

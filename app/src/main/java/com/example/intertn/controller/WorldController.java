@@ -25,6 +25,7 @@ import java.util.Random;
 public class WorldController implements Serializable {
     private World world;
     private Patient currentPatient;
+    private int countAction=3;
 
     public WorldController(){
         this.world=new World();
@@ -81,6 +82,7 @@ public class WorldController implements Serializable {
             return false;
         }
         currentPatient=(world.getPatients().listIterator(currentIndex+1).next());
+        countAction=3;
         return true;
     }
     public List<String> getCurrentDeadPatient(){
@@ -315,8 +317,12 @@ public class WorldController implements Serializable {
     public int getMedicineCount(String type){
         return world.getAvatar().getMedicineCount(type);
     }
+
     public void treatPatient(String medicineType){
+        if(countAction==0)
+            return;
         world.getAvatar().giveMedicine(currentPatient,medicineType);
+        countAction--;
     }
 
     public String getHistory(){
@@ -326,5 +332,8 @@ public class WorldController implements Serializable {
         str+="Загинуло: "+world.getDeadPatients().size()+"\n";
         str+="Залишилось хворими: "+world.getPatients().size();
         return str;
+    }
+    public int getCountAction(){
+        return countAction;
     }
 }

@@ -150,4 +150,16 @@
             android:textSize="24sp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textActionCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/scrollMedicines"
+        android:layout_alignRight="@id/scrollMedicines"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        style="@style/ButtonStyle"
+        android:text="Дій залишилось: "
+        android:textSize="22sp"/>
 </RelativeLayout>
