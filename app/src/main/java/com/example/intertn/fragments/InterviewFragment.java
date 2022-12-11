@@ -68,9 +68,9 @@ public class InterviewFragment extends BaseFragment {
         patientText.setText(worldController.getStartAnswer());
         ImageView imagePatient=view.findViewById(R.id.imagePatient);
         if(worldController.getCurrentPatientSex()== SexType.MALE) {
-            imagePatient.setImageResource(R.drawable.icon_test);
+            imagePatient.setImageResource(R.drawable.icon_male_1);
         } else if(worldController.getCurrentPatientSex()== SexType.FEMALE)
-            imagePatient.setImageResource(R.drawable.icon_test2);
+            imagePatient.setImageResource(R.drawable.icon_female_3);
         view.findViewById(R.id.buttonTreat).setOnClickListener(v -> getAppContract().toBodyScreen(this));
 
         List<Button> questionButtons=new ArrayList<>();
@@ -78,10 +78,6 @@ public class InterviewFragment extends BaseFragment {
         questionButtons.get(0).setOnClickListener(v-> patientText.setText(worldController.getAnswer(0)+"\n"));
         questionButtons.add(view.findViewById(R.id.buttonQuestion2));
         questionButtons.get(1).setOnClickListener(v-> patientText.setText(worldController.getAnswer(1)+"\n"));
-        questionButtons.add(view.findViewById(R.id.buttonQuestion3));
-        questionButtons.get(2).setOnClickListener(v-> patientText.setText(worldController.getAnswer(2)+"\n"));
-        questionButtons.add(view.findViewById(R.id.buttonQuestion4));
-        questionButtons.get(3).setOnClickListener(v-> patientText.setText(worldController.getAnswer(3)+"\n"));
 
         setQuestionText(questionButtons);
     }

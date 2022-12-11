@@ -56,9 +56,9 @@ public class BodyFragment extends BaseFragment {
         hideUi(view);
         ImageView imagePatient=view.findViewById(R.id.imagePatient);
         if(worldController.getCurrentPatientSex()== SexType.MALE) {
-            imagePatient.setImageResource(R.drawable.icon_test);
+            imagePatient.setImageResource(R.drawable.icon_male_1);
         } else if(worldController.getCurrentPatientSex()== SexType.FEMALE)
-            imagePatient.setImageResource(R.drawable.icon_test2);
+            imagePatient.setImageResource(R.drawable.icon_female_3);
 
         view.findViewById(R.id.buttonToDialog).setOnClickListener(v -> getAppContract().toInterviewScreen(this));
         view.findViewById(R.id.buttonToNextPatient).setOnClickListener(v -> {
@@ -109,7 +109,8 @@ public class BodyFragment extends BaseFragment {
 
         TextView patientText=view.findViewById(R.id.textTemperature);
         patientText.setText(worldController.getPatientTemperature() +"°C");
-
+        TextView patientStateText=view.findViewById(R.id.textStatePatient);
+        patientStateText.setText(worldController.getPatientState() +"%");
         dialogsText=view.findViewById(R.id.textDialogs);
         setDialogsText();
     }

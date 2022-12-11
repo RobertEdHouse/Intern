@@ -20,7 +20,7 @@ public class World implements Serializable {
     private List<Question> Questions;
     private List<Medicine> Medicines;
 
-    private Map<String, Disease> treat;
+    private Map<String, List<Disease>> treat;
     private List<Patient> currentDeadPatients;
 
 
@@ -241,7 +241,7 @@ public class World implements Serializable {
     public void setTestDisease(List<Disease> diseases){
         this.Diseases=diseases;
     }
-    public void setTestTreat(String m, Disease d){
-        treat.put(m,Diseases.get(0));
+    public void setTestTreat(String m, List<Disease> d){
+        treat.put(m,d);
     }
 }

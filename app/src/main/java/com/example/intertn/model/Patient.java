@@ -80,7 +80,7 @@ public class Patient implements Serializable {
     }
 
 
-    public void nextDay(List<Symptom> symptoms, Map<String, Disease> treat)
+    public void nextDay(List<Symptom> symptoms, Map<String, List<Disease>> treat)
     {
         //применить лекарства
         //изменить состояния болезней
@@ -94,17 +94,30 @@ public class Patient implements Serializable {
                 {
                     if (treat.get(med.getType())!=null)
                     {
-                        if(treat.get(med.getType()).getId()==dis.getId()) {
-                            int countMedicine=med.getCount();
-                            for (int i = 0; i < countMedicine; i++) {
-                                if (dis.isTemperature() == true)
-                                    lowerTemperature();
-                                med.treatOrgans(this);
-                                med.used();
-                                if (med.getCount() == 0)
-                                    Medicines.remove(med);
-                                dis.downStage(Immunity,med.getPower());
-                                isTreat=true;
+                        List<Disease>diseaseList=treat.get(med.getType());
+                        for (Disease disis:diseaseList) {
+
+                            if(disis.getId()==dis.getId()) {
+                                int countMedicine=med.getCount();
+                                for (int i = 0; i < countMedicine; i++) {
+                                    if (dis.isTemperature() == true)
+                                        lowerTemperature();
+                                    med.treatOrgans(this);
+                                    med.used();
+                                    if (med.getCount() == 0)
+                                        Medicines.remove(med);
+                                    dis.downStage(Immunity,med.getPower());
+                                    isTreat=true;
+                                }
+                            }
+                            else if(disis.getId()==-1){
+                                int countMedicine=med.getCount();
+                                for (int i = 0; i < countMedicine; i++) {
+                                    med.treatOrgans(this);
+                                    med.used();
+                                    if (med.getCount() == 0)
+                                        Medicines.remove(med);
+                                }
                             }
                         }
                     }
@@ -210,17 +223,17 @@ public class Patient implements Serializable {
             return new Answer(-1,getStandardAnswer());
         }
         List<Symptom> commonSymptoms = new ArrayList<>();
-        for (int code : question.getSymptomCodes())
-        {
-            for (Symptom symptom : Symptoms)
-            {
-                if (code == symptom.getId())
-                    commonSymptoms.add(symptom);
-            }
-        }
+//        for (int code : question.getSymptomCodes())
+//        {
+//            for (Symptom symptom : Symptoms)
+//            {
+//                if (code == symptom.getId())
+//                    commonSymptoms.add(symptom);
+//            }
+//        }
         Random rand = new Random();
-        Symptom symptomRandom = commonSymptoms.get(rand.nextInt(commonSymptoms.size()));
-        return symptomRandom.getAnswer();
+        Symptom symptomRandom = Symptoms.get(rand.nextInt(Symptoms.size()));
+        return symptomRandom.getAnswer(question.getSymptomCodes().get(0));
     }
     private String getStandardAnswer(){
         return "Доброго дня\n";
@@ -297,5 +310,13 @@ public class Patient implements Serializable {
 
     public int getImmunity() {
         return Immunity;
+    }
+
+    public int getStatePercent(){
+        int state=Diseases.size()*100;
+        for (Disease d:Diseases) {
+            state-=d.getStagePercent();
+        }
+        return state/Diseases.size();
     }
 }

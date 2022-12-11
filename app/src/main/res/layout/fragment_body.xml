@@ -25,10 +25,11 @@
             android:layout_weight="1"
             android:foreground="@drawable/round_corner_empty"
             android:maxWidth="300dp"
-            android:maxHeight="200dp"
+            android:maxHeight="100dp"
             android:minWidth="300dp"
+            android:minHeight="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_test2" />
+            android:src="@drawable/icon_male_1" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -92,6 +93,18 @@
             android:layout_marginEnd="15dp"
             android:fontFamily="sans-serif-condensed"
             android:text="36,6°C"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/textStatePatient"
+            style="@style/ButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/imageBody"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="100%"
             android:textSize="34sp" />
 
         <LinearLayout

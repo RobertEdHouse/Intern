@@ -77,12 +77,13 @@ public class WorldController implements Serializable {
     }
 
     public boolean nextPatient(){
+        countAction=3;
         int currentIndex=world.getPatients().indexOf(currentPatient);
         if(currentIndex+1>=world.getPatients().size()){
             return false;
         }
         currentPatient=(world.getPatients().listIterator(currentIndex+1).next());
-        countAction=3;
+
         return true;
     }
     public List<String> getCurrentDeadPatient(){
@@ -170,34 +171,179 @@ public class WorldController implements Serializable {
         answers.add(0);
         answers.add(1);
         List<Symptom> symptoms = new ArrayList<>();
-        symptoms.add(new Symptom(0, "Головний бiль",answers));
+        symptoms.add(new Symptom(0, "Нездужання",answers));
+
         answers = new ArrayList<>();
         answers.add(2);
         answers.add(3);
-        symptoms.add(new Symptom(1, "Бiль у животi", answers));
+        symptoms.add(new Symptom(1, "Рвота", answers));
+
         answers = new ArrayList<>();
         answers.add(4);
         answers.add(5);
-        symptoms.add(new Symptom(2, "Слабкість", answers));
+        symptoms.add(new Symptom(2, "Діарея", answers));
+
+        answers = new ArrayList<>();
+        answers.add(6);
+        answers.add(7);
+        symptoms.add(new Symptom(3, "Зневоднення", answers));
+
+        answers = new ArrayList<>();
+        answers.add(8);
+        answers.add(9);
+        symptoms.add(new Symptom(4, "Гострий біль у кишечнику", answers));
+
+        answers = new ArrayList<>();
+        answers.add(10);
+        answers.add(11);
+        symptoms.add(new Symptom(5, "Нудота", answers));
+
+        answers = new ArrayList<>();
+        answers.add(12);
+        answers.add(13);
+        symptoms.add(new Symptom(6, "Біль у шлунку", answers));
+
+        answers = new ArrayList<>();
+        answers.add(14);
+        answers.add(15);
+        symptoms.add(new Symptom(7, "Гострий біль у шлунку", answers));
+
+        answers = new ArrayList<>();
+        answers.add(16);
+        answers.add(17);
+        symptoms.add(new Symptom(8, "Віддишка", answers));
+
+        answers = new ArrayList<>();
+        answers.add(18);
+        answers.add(19);
+        symptoms.add(new Symptom(9, "Кашель", answers));
+
+        answers = new ArrayList<>();
+        answers.add(20);
+        answers.add(21);
+        symptoms.add(new Symptom(10, "Слабкість", answers));
+
+        answers = new ArrayList<>();
+        answers.add(22);
+        answers.add(23);
+        symptoms.add(new Symptom(11, "Ядуха", answers));
+
+        answers = new ArrayList<>();
+        answers.add(24);
+        answers.add(25);
+        symptoms.add(new Symptom(12, "Інтоксикація", answers));
+
+        answers = new ArrayList<>();
+        answers.add(24);
+        answers.add(25);
+        symptoms.add(new Symptom(13, "Дезорієнтація", answers));
+
+        answers = new ArrayList<>();
+        answers.add(24);
+        answers.add(25);
+        symptoms.add(new Symptom(14, "Головний біль", answers));
+
+        answers = new ArrayList<>();
+        answers.add(24);
+        answers.add(25);
+        symptoms.add(new Symptom(15, "Сплутаність свідомості", answers));
+
         world.setTestSymptom(symptoms);
 
 
-        Random random = new Random();
-        List<SymptomManifest> listSymptoms = new ArrayList<>();
-        listSymptoms.add(new SymptomManifest(0, random.nextInt(100)));
-        listSymptoms.add(new SymptomManifest(1, random.nextInt(100)));
-        listSymptoms.add(new SymptomManifest(2, random.nextInt(100)));
-
-        List<Integer> listOrgans = new ArrayList<>();
-        listOrgans.add(1);
-        listOrgans.add(0);
-        listOrgans.add(3);
-        listOrgans.add(0);
-        listOrgans.add(0);
-        listOrgans.add(3);
 
         List<Disease> list = new ArrayList<>();
+        Random random = new Random();
+
+        List<SymptomManifest> listSymptoms = new ArrayList<>();
+        listSymptoms.add(new SymptomManifest(0, 100));
+        listSymptoms.add(new SymptomManifest(1, 80));
+        listSymptoms.add(new SymptomManifest(2, 60));
+        listSymptoms.add(new SymptomManifest(3, 40));
+        listSymptoms.add(new SymptomManifest(4, 30));
+        listSymptoms.add(new SymptomManifest(5, 20));
+
+        List<Integer> listOrgans = new ArrayList<>();
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(2);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(1);
+
         Disease disease1 = new Disease(0, "Отруєння", 5, listSymptoms);
+        disease1.setParamOrgan(listOrgans, true);
+        list.add(disease1);
+
+        listSymptoms = new ArrayList<>();
+        listSymptoms.add(new SymptomManifest(6, 100));
+        listSymptoms.add(new SymptomManifest(1, 80));
+        listSymptoms.add(new SymptomManifest(3, 60));
+        listSymptoms.add(new SymptomManifest(7, 40));
+        listSymptoms.add(new SymptomManifest(8, 30));
+
+        listOrgans = new ArrayList<>();
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(2);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(0);
+
+        disease1 = new Disease(1, "Виразка шлунку", 5, listSymptoms);
+        disease1.setParamOrgan(listOrgans, false);
+        list.add(disease1);
+
+        listSymptoms = new ArrayList<>();
+        listSymptoms.add(new SymptomManifest(9, 100));
+        listSymptoms.add(new SymptomManifest(10, 80));
+        listSymptoms.add(new SymptomManifest(11, 60));
+
+        listOrgans = new ArrayList<>();
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(2);
+        listOrgans.add(0);
+
+        disease1 = new Disease(2, "Пневмонія", 5, listSymptoms);
+        disease1.setParamOrgan(listOrgans, true);
+        list.add(disease1);
+
+        listSymptoms = new ArrayList<>();
+        listSymptoms.add(new SymptomManifest(9, 100));
+        listSymptoms.add(new SymptomManifest(10, 80));
+        listSymptoms.add(new SymptomManifest(11, 60));
+        listSymptoms.add(new SymptomManifest(12, 60));
+
+        listOrgans = new ArrayList<>();
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(1);
+        listOrgans.add(3);
+        listOrgans.add(0);
+
+        disease1 = new Disease(3, "Туберкульоз", 5, listSymptoms);
+        disease1.setParamOrgan(listOrgans, true);
+        list.add(disease1);
+
+        listSymptoms = new ArrayList<>();
+        listSymptoms.add(new SymptomManifest(1, 100));
+        listSymptoms.add(new SymptomManifest(13, 80));
+        listSymptoms.add(new SymptomManifest(14, 60));
+        listSymptoms.add(new SymptomManifest(15, 60));
+
+        listOrgans = new ArrayList<>();
+        listOrgans.add(3);
+        listOrgans.add(0);
+        listOrgans.add(0);
+        listOrgans.add(2);
+        listOrgans.add(0);
+        listOrgans.add(1);
+
+        disease1 = new Disease(4, "Енцефаліт", 5, listSymptoms);
         disease1.setParamOrgan(listOrgans, true);
         list.add(disease1);
 
@@ -206,45 +352,95 @@ public class WorldController implements Serializable {
 
         List<Integer> symptom = new ArrayList<>();
         symptom.add(0);
-        symptom.add(1);
 
         List<Question> questions = new ArrayList<>();
         questions.add(new Question(0, "Як себе почуваєте?", symptom));
         symptom = new ArrayList<>();
-        symptom.add(2);
-        questions.add(new Question(1, "Якi вiдчуття?", symptom));
+        symptom.add(1);
+        questions.add(new Question(1, "Як пройшла ніч?", symptom));
         world.setTestQuestion(questions);
 
 
         List<Medicine> listm = new ArrayList<>();
-        Medicine medicine1 = new Medicine(0, "Панкреатин", 10, 100,90);
+        Medicine medicine1 = new Medicine(0, "Сорбент", 5, 100,90);
         List<Integer> listOrgans2 = new ArrayList<>();
         listOrgans2.add(0);
         listOrgans2.add(0);
         listOrgans2.add(3);
-        listOrgans2.add(-1);
         listOrgans2.add(0);
-        listOrgans2.add(2);
+        listOrgans2.add(0);
+        listOrgans2.add(1);
         listm.add(medicine1);
         medicine1.setParamOrgan(listOrgans2);
-        world.setTestTreat(medicine1.getType(),world.getDiseases().get(0));
+        List<Disease>treatDisease=new ArrayList<>();
+        treatDisease.add(world.getDiseases().get(0));
+        world.setTestTreat(medicine1.getType(),treatDisease);
 
-        medicine1 = new Medicine(1, "Цитрамон", 10, 100,20);
+        medicine1 = new Medicine(1, "Антибіотик", 5, 100,20);
         listOrgans2 = new ArrayList<>();
-        listOrgans2.add(3);
         listOrgans2.add(0);
         listOrgans2.add(0);
-        listOrgans2.add(0);
-        listOrgans2.add(0);
-        listOrgans2.add(0);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(1);
+        listOrgans2.add(-1);
         listm.add(medicine1);
         medicine1.setParamOrgan(listOrgans2);
-        world.setTestTreat(medicine1.getType(),world.getDiseases().get(0));
+        treatDisease=new ArrayList<>();
+        treatDisease.add(world.getDiseases().get(1));
+        treatDisease.add(world.getDiseases().get(2));
+        world.setTestTreat(medicine1.getType(),treatDisease);
+
+        medicine1 = new Medicine(2, "Хіміотерапія", 5, 100,20);
+        listOrgans2 = new ArrayList<>();
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listm.add(medicine1);
+        medicine1.setParamOrgan(listOrgans2);
+        treatDisease=new ArrayList<>();
+        treatDisease.add(world.getDiseases().get(3));
+        world.setTestTreat(medicine1.getType(),treatDisease);
+
+        medicine1 = new Medicine(3, "Противірусні", 5, 100,20);
+        listOrgans2 = new ArrayList<>();
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listOrgans2.add(-1);
+        listm.add(medicine1);
+        medicine1.setParamOrgan(listOrgans2);
+        treatDisease=new ArrayList<>();
+        treatDisease.add(world.getDiseases().get(4));
+        world.setTestTreat(medicine1.getType(),treatDisease);
+
+        medicine1 = new Medicine(4, "Вітаміни", 5, 100,20);
+        listOrgans2 = new ArrayList<>();
+        listOrgans2.add(1);
+        listOrgans2.add(1);
+        listOrgans2.add(1);
+        listOrgans2.add(1);
+        listOrgans2.add(1);
+        listOrgans2.add(1);
+        listm.add(medicine1);
+        medicine1.setParamOrgan(listOrgans2);
+        treatDisease=new ArrayList<>();
+        treatDisease.add(new Disease(-1,"All",0,null));
+        world.setTestTreat(medicine1.getType(),treatDisease);
+
+
         world.setTestMedicines(listm);
 
 
 
     }
+
+
 
     private void setTestPatients(){
         Random random = new Random();
@@ -298,17 +494,17 @@ public class WorldController implements Serializable {
     public List<String> getMedicines(Organs organ){
         List<String> medStr=new ArrayList<>();
         for (Medicine m:world.getAvatar().getMedicines()) {
-            if(m.Brain>0&&organ.equals(Organs.Brain))
+            if(m.Brain!=0&&organ.equals(Organs.Brain))
                 medStr.add(m.getType());
-            if(m.Stomach>0&&organ.equals(Organs.Stomach))
+            if(m.Stomach!=0&&organ.equals(Organs.Stomach))
                 medStr.add(m.getType());
-            if(m.Heart>0&&organ.equals(Organs.Heart))
+            if(m.Heart!=0&&organ.equals(Organs.Heart))
                 medStr.add(m.getType());
-            if(m.Intestines>0&&organ.equals(Organs.Intestines))
+            if(m.Intestines!=0&&organ.equals(Organs.Intestines))
                 medStr.add(m.getType());
-            if(m.Lungs>0&&organ.equals(Organs.Lungs))
+            if(m.Lungs!=0&&organ.equals(Organs.Lungs))
                 medStr.add(m.getType());
-            if(m.Liver>0&&organ.equals(Organs.Liver))
+            if(m.Liver!=0&&organ.equals(Organs.Liver))
                 medStr.add(m.getType());
         }
         return medStr;
@@ -335,5 +531,9 @@ public class WorldController implements Serializable {
     }
     public int getCountAction(){
         return countAction;
+    }
+
+    public String getPatientState(){
+        return String.valueOf(currentPatient.getStatePercent());
     }
 }
